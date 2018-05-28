@@ -14,3 +14,7 @@ doc/javadoc
 /nbproject/private/
 /dist/
 /textures
+.idea/
+core/module-core.iml
+main.iml
+target
