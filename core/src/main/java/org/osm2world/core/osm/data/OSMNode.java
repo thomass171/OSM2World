@@ -1,6 +1,6 @@
 package org.osm2world.core.osm.data;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.TagGroup;
+import org.osm2world.openstreetmap.data.TagGroup;
 
 public class OSMNode extends OSMElement {
 	public final double lat;

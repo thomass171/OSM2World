@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.configuration.Configuration;
-import org.openstreetmap.josm.plugins.graphview.core.data.Tag;
-import org.openstreetmap.josm.plugins.graphview.core.data.osmosis.OSMFileDataSource;
+import org.osm2world.openstreetmap.data.Tag;
+import org.osm2world.openstreetmap.data.osmosis.OSMFileDataSource;
 import org.openstreetmap.osmosis.core.domain.v0_6.Bound;
 import org.osm2world.core.map_data.creation.index.MapDataIndex;
 import org.osm2world.core.map_data.creation.index.MapIntersectionGrid;

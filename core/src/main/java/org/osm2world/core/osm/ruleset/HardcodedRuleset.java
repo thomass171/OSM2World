@@ -3,7 +3,7 @@ package org.osm2world.core.osm.ruleset;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.Tag;
+import org.osm2world.openstreetmap.data.Tag;
 
 public class HardcodedRuleset implements Ruleset {
 

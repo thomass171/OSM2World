@@ -1,4 +1,4 @@
-package org.openstreetmap.josm.plugins.graphview.core.data;
+package org.osm2world.openstreetmap.data;
 
 /**
  * immutable representation of an OSM tag (key-value-pair)

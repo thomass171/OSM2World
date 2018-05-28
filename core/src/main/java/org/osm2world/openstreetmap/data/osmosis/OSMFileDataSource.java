@@ -1,4 +1,4 @@
-package org.openstreetmap.josm.plugins.graphview.core.data.osmosis;
+package org.osm2world.openstreetmap.data.osmosis;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.DataSource;
-import org.openstreetmap.josm.plugins.graphview.core.data.DataSourceObserver;
-import org.openstreetmap.josm.plugins.graphview.core.data.MapBasedTagGroup;
-import org.openstreetmap.josm.plugins.graphview.core.data.TagGroup;
+import org.osm2world.openstreetmap.data.DataSource;
+import org.osm2world.openstreetmap.data.DataSourceObserver;
+import org.osm2world.openstreetmap.data.MapBasedTagGroup;
+import org.osm2world.openstreetmap.data.TagGroup;
 import org.openstreetmap.osmosis.core.container.v0_6.EntityContainer;
 import org.openstreetmap.osmosis.core.domain.v0_6.Entity;
 import org.openstreetmap.osmosis.core.domain.v0_6.EntityType;

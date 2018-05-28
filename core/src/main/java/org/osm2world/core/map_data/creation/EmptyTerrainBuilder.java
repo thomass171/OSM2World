@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.EmptyTagGroup;
-import org.openstreetmap.josm.plugins.graphview.core.data.MapBasedTagGroup;
-import org.openstreetmap.josm.plugins.graphview.core.data.Tag;
+import org.osm2world.openstreetmap.data.EmptyTagGroup;
+import org.osm2world.openstreetmap.data.MapBasedTagGroup;
+import org.osm2world.openstreetmap.data.Tag;
 import org.osm2world.core.map_data.data.MapArea;
 import org.osm2world.core.map_data.data.MapNode;
 import org.osm2world.core.math.AxisAlignedBoundingBoxXZ;

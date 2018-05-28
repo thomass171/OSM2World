@@ -1,4 +1,4 @@
-package org.openstreetmap.josm.plugins.graphview.core.data;
+package org.osm2world.openstreetmap.data;
 
 /**
  * observer that will be informed about changes in a DataSource

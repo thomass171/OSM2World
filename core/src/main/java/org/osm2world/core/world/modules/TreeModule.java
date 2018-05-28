@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-import org.openstreetmap.josm.plugins.graphview.core.data.Tag;
-import org.openstreetmap.josm.plugins.graphview.core.data.TagGroup;
+import org.osm2world.openstreetmap.data.Tag;
+import org.osm2world.openstreetmap.data.TagGroup;
 import org.osm2world.core.map_data.data.MapArea;
 import org.osm2world.core.map_data.data.MapData;
 import org.osm2world.core.map_data.data.MapElement;

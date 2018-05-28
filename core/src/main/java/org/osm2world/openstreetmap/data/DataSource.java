@@ -1,4 +1,4 @@
-package org.openstreetmap.josm.plugins.graphview.core.data;
+package org.osm2world.openstreetmap.data;
 
 /**
  * source of OSM data that can be used to build graphs from

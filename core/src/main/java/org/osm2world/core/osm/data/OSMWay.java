@@ -2,7 +2,7 @@ package org.osm2world.core.osm.data;
 
 import java.util.List;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.TagGroup;
+import org.osm2world.openstreetmap.data.TagGroup;
 
 public class OSMWay extends OSMElement {
 	

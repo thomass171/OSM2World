@@ -19,13 +19,6 @@
             <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
     </repositories>
-    
-    <!--muss nicht, oder? <parent>
-        <groupId>org.osm2world</groupId>
-        <artifactId>main</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>-->
 
     <dependencies>
         <dependency>
@@ -33,7 +26,7 @@
             <artifactId>log4j</artifactId>
             <version>1.2.12</version>
         </dependency>
-        <!-- poly2tri verwendet sl4j: https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <!-- poly2tri uses sl4j: https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -116,16 +109,6 @@
         </resources>
 
         <plugins>
-            <!-- 22.08.2016: Durch fie FG Tests reicht mem nicht mehr. Aber 1024 sollten es schon sein.-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7.2</version>
-                <configuration>
-                    <!--23.1.18: -XX:-UseGCOverheadLimit for avoiding "gc overhead limit exceeded", 2024->3000-->
-                    <argLine>-Xms512m -Xmx3000m -XX:-UseGCOverheadLimit</argLine>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -133,18 +116,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

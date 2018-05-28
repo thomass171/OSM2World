@@ -3,7 +3,7 @@ package org.osm2world.core.world.modules.common;
 import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseAngle;
 import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseOsmDecimal;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.TagGroup;
+import org.osm2world.openstreetmap.data.TagGroup;
 import org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser;
 import org.osm2world.core.world.creation.WorldModule;
 

@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
-import org.openstreetmap.josm.plugins.graphview.core.data.MapBasedTagGroup;
-import org.openstreetmap.josm.plugins.graphview.core.data.Tag;
+import org.osm2world.openstreetmap.data.MapBasedTagGroup;
+import org.osm2world.openstreetmap.data.Tag;
 import org.osm2world.core.ConversionFacade;
 import org.osm2world.core.osm.data.OSMData;
 import org.osm2world.core.osm.data.OSMNode;

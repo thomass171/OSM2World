@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.EmptyTagGroup;
+import org.osm2world.openstreetmap.data.EmptyTagGroup;
 import org.osm2world.core.math.VectorXYZ;
 import org.osm2world.core.math.VectorXZ;
 import org.osm2world.core.osm.data.OSMNode;

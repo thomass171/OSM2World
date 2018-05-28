@@ -1,6 +1,6 @@
 package org.osm2world.core.osm.ruleset;
 
-import org.openstreetmap.josm.plugins.graphview.core.data.Tag;
+import org.osm2world.openstreetmap.data.Tag;
 
 public interface Ruleset {
 	
