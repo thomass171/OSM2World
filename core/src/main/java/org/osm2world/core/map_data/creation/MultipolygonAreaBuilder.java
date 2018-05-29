@@ -46,7 +46,7 @@ import org.osm2world.core.osm.ruleset.Ruleset;
  * but are represented as multiple touching holes.</li>
  * </ul>
  */
-final class MultipolygonAreaBuilder {
+public class MultipolygonAreaBuilder {
 	
 	/** prevents instantiation */
 	private MultipolygonAreaBuilder() { }

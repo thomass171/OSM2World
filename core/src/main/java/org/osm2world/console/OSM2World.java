@@ -5,7 +5,12 @@ import static org.osm2world.core.GlobalValues.VERSION_STRING;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -95,7 +100,7 @@ public class OSM2World {
             }
 
         }
-		
+        
 		/* collect parameter groups into compatible groups
 		 * (groups of parameter groups that use the same input and config files) */
 
@@ -155,16 +160,15 @@ public class OSM2World {
 
     }
 
-    private static Configuration loadConfig(File configFile) {
+    private static Configuration loadConfig(Reader inputstream) {
         Configuration config = new BaseConfiguration();
 
         try {
-            //configFile = representativeArgs.getConfig();
-            Configurations configs = new Configurations();
-            PropertiesConfiguration fileConfig = configs.properties(configFile);
+            PropertiesConfiguration fileConfig = new PropertiesConfiguration();
+            fileConfig.read((inputstream));
             //TODO really needed? fileConfig.setListDelimiter(';');
             config = fileConfig;
-        } catch (ConfigurationException e) {
+        } catch (Exception e) {
             System.err.println("could not read config, ignoring it: ");
             System.err.println(e);
         }
@@ -180,7 +184,11 @@ public class OSM2World {
         CLIArguments representativeArgs = argumentsGroup.getRepresentative();
 
         if (representativeArgs.isConfig()) {
-            config = loadConfig(representativeArgs.getConfig());
+            try {
+                config = loadConfig(new FileReader(representativeArgs.getConfig()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 		
 		/* run selected mode */
@@ -227,21 +235,15 @@ public class OSM2World {
     Configuration compositeConfiguration;
 
     OSM2World(File inputfile, Configuration userconfig) throws IOException {
-
+        String defaultconfigfile = "config/configuration-default.properties";
         Configuration defaultconfig;
-        URL url = Thread.currentThread().getContextClassLoader().getResource("configuration-default.properties");
-        File configFile = null;
-        try {
-            configFile = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new IOException(e);
-        }
-        defaultconfig = loadConfig(configFile);
+        InputStream inputstream = Thread.currentThread().getContextClassLoader().getResourceAsStream(defaultconfigfile);
+        defaultconfig = loadConfig(new InputStreamReader(inputstream));
         // better to use CombinedConfiguration?
-       OSMDataReader dataReader = new OSMFileReader(inputfile);
+        OSMDataReader dataReader = new OSMFileReader(inputfile);
         osmdata = dataReader.getData();
-        cf = new ConversionFacade(osmdata,defaultconfig);
-       
+        cf = new ConversionFacade(osmdata, defaultconfig);
+
     }
 
     /**
@@ -252,12 +254,12 @@ public class OSM2World {
         return osm2World;
     }
 
-    public ConversionFacade getConversionFacade(){
+    public ConversionFacade getConversionFacade() {
         return cf;
     }
 
-    public OSMData getData(){
+    public OSMData getData() {
         return osmdata;
     }
-   
+
 }

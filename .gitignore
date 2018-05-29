@@ -15,7 +15,7 @@ doc/javadoc
 /dist/
 /textures
 .idea/
-core/module-core.iml
+core/*.iml
 main.iml
 viewer/module-viewer.iml
 povray/module-povray.iml

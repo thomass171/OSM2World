@@ -72,9 +72,11 @@ import org.osm2world.core.world.modules.WaterModule;
  */
 public class ConversionFacade {
     OSMData osmData = null;
+    MapData mapData=null;
     Configuration defaultconfig;
     CompositeConfiguration compositeConfiguration;
     List<WorldModule> worldModules = null;
+    OriginMapProjection mapProjection=null;
     
     /**
      *
@@ -268,11 +270,11 @@ public class ConversionFacade {
 		/* create map data from OSM data */
         updatePhase(Phase.MAP_DATA);
 
-        OriginMapProjection mapProjection = mapProjectionFactory.make();
+        mapProjection = mapProjectionFactory.make();
         mapProjection.setOrigin(osmData);
 
         OSMToMapDataConverter converter = new OSMToMapDataConverter(mapProjection, compositeConfiguration);
-        MapData mapData = converter.createMapData(osmData);
+        mapData = converter.createMapData(osmData);
 		
 		/* apply world modules */
         updatePhase(Phase.REPRESENTATION);
@@ -447,6 +449,14 @@ public class ConversionFacade {
             }
         }
         return null;
+    }
+
+    public MapData getMapData() {
+        return mapData;
+    }
+    
+    public MapProjection getProjection(){
+        return mapProjection;
     }
 
     /**
