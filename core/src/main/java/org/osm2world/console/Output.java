@@ -11,7 +11,8 @@ import java.util.Map;
 
 
 import static java.lang.Double.*;
-import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.configuration2.Configuration;
 import org.osm2world.console.CLIArgumentsUtil.InputMode;
 import org.osm2world.console.CLIArgumentsUtil.OutputMode;
 import org.osm2world.core.ConversionFacade;
@@ -93,38 +94,12 @@ public final class Output {
 			 
 		}
 		
-		
-		ConversionFacade cf = new ConversionFacade();
+		ConversionFacade cf = new ConversionFacade(dataReader.getData(),config);
 		PerformanceListener perfListener =
 			new PerformanceListener(argumentsGroup.getRepresentative());
 		cf.addProgressListener(perfListener);
-				
-		String interpolatorType = config.getString("terrainInterpolator");
-		if ("ZeroInterpolator".equals(interpolatorType)) {
-			cf.setTerrainEleInterpolatorFactory(
-					new DefaultFactory<TerrainInterpolator>(ZeroInterpolator.class));
-		} else if ("LeastSquaresInterpolator".equals(interpolatorType)) {
-			cf.setTerrainEleInterpolatorFactory(
-					new DefaultFactory<TerrainInterpolator>(LeastSquaresInterpolator.class));
-		} else if ("NaturalNeighborInterpolator".equals(interpolatorType)) {
-			cf.setTerrainEleInterpolatorFactory(
-					new DefaultFactory<TerrainInterpolator>(NaturalNeighborInterpolator.class));
-		}
 		
-		String enforcerType = config.getString("eleConstraintEnforcer");
-		if ("NoneEleConstraintEnforcer".equals(enforcerType)) {
-			cf.setEleConstraintEnforcerFactory(
-					new DefaultFactory<EleConstraintEnforcer>(NoneEleConstraintEnforcer.class));
-		} else if ("SimpleEleConstraintEnforcer".equals(enforcerType)) {
-			cf.setEleConstraintEnforcerFactory(
-					new DefaultFactory<EleConstraintEnforcer>(SimpleEleConstraintEnforcer.class));
-		} else if ("LPEleConstraintEnforcer".equals(enforcerType)) {
-			throw new RuntimeException("LPEleConstraintEnforcer not available");
-			//cf.setEleConstraintEnforcerFactory(
-			//		new DefaultFactory<EleConstraintEnforcer>(LPEleConstraintEnforcer.class));
-		}
-		
-		Results results = cf.createRepresentations(dataReader.getData(), null, config, null);
+		Results results = cf.createRepresentations(null,null);
 		
 		//ImageExporter exporter = null;
 		

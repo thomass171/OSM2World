@@ -7,7 +7,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Arrays.asList;
 import static java.util.Collections.*;
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.*;
 import static org.osm2world.core.map_elevation.creation.EleConstraintEnforcer.ConstraintType.*;
 import static org.osm2world.core.map_elevation.data.GroundState.*;
 import static org.osm2world.core.math.GeometryUtil.*;
@@ -15,6 +14,9 @@ import static org.osm2world.core.math.VectorXYZ.Z_UNIT;
 import static org.osm2world.core.target.common.material.NamedTexCoordFunction.*;
 import static org.osm2world.core.target.common.material.TexCoordUtil.*;
 import static org.osm2world.core.world.modules.common.WorldModuleParseUtil.*;
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseAngle;
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseColor;
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseOsmDecimal;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -72,6 +74,7 @@ import org.osm2world.core.world.modules.common.ConfigurableWorldModule;
 import org.osm2world.core.world.network.AbstractNetworkWaySegmentWorldObject;
 
 import com.google.common.base.Function;
+import org.osm2world.openstreetmap.util.ValueStringParser;
 
 /**
  * adds buildings to the world
@@ -509,7 +512,7 @@ public class BuildingModule extends ConfigurableWorldModule {
 			
 			if (getValue("min_height") != null) {
 				
-				Float minHeight = parseMeasure(getValue("min_height"));
+				Float minHeight = ValueStringParser.parseMeasure(getValue("min_height"));
 				if (minHeight != null) {
 					return minHeight;
 				}
@@ -1053,7 +1056,7 @@ public class BuildingModule extends ConfigurableWorldModule {
 				
 				if (area.getTags().containsKey("roof:height")) {
 					String valueString = getValue("roof:height");
-					taggedHeight = parseMeasure(valueString);
+					taggedHeight = ValueStringParser.parseMeasure(valueString);
 				} else if (getValue("roof:levels") != null) {
 					try {
 						taggedHeight = 2.5f * Integer.parseInt(getValue("roof:levels"));
@@ -2118,7 +2121,7 @@ public class BuildingModule extends ConfigurableWorldModule {
 				boolean usePartRoofHeight = false;
 				
 				if (area.getTags().containsKey("roof:height")){
-					roofHeight = parseMeasure(area.getTags().getValue("roof:height"));
+					roofHeight = ValueStringParser.parseMeasure(area.getTags().getValue("roof:height"));
 					usePartRoofHeight = true;
 				} else
 					roofHeight = DEFAULT_RIDGE_HEIGHT;
@@ -2164,11 +2167,11 @@ public class BuildingModule extends ConfigurableWorldModule {
 						Float nodeHeight = null;
 
 						if (node.getTags().containsKey("roof:height")) {
-							nodeHeight = parseMeasure(node.getTags()
+							nodeHeight = ValueStringParser.parseMeasure(node.getTags()
 									.getValue("roof:height"));
 						// hmm, shouldnt edges be interpolated? some seem to think they dont
 						} else if (waySegment.getTags().containsKey("roof:height")) {
-							nodeHeight = parseMeasure(waySegment.getTags()
+							nodeHeight = ValueStringParser.parseMeasure(waySegment.getTags()
 							        .getValue("roof:height"));
 						} else if (node.getTags().contains("roof:apex",	"yes")) {
 							nodeHeight = (float)roofHeight;
@@ -2191,7 +2194,7 @@ public class BuildingModule extends ConfigurableWorldModule {
 					Float nodeHeight = null;
 
 					if (waySegment.getTags().containsKey("roof:height")) {
-						nodeHeight = parseMeasure(waySegment.getTags()
+						nodeHeight = ValueStringParser.parseMeasure(waySegment.getTags()
 								.getValue("roof:height"));
 					} else {
 						nodeHeight = (float) roofHeight;

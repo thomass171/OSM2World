@@ -1,11 +1,12 @@
 package org.osm2world.core.world.modules.common;
 
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseAngle;
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseOsmDecimal;
 
 import org.osm2world.openstreetmap.data.TagGroup;
-import org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser;
 import org.osm2world.core.world.creation.WorldModule;
+import org.osm2world.openstreetmap.util.ValueStringParser;
+
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseAngle;
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseOsmDecimal;
 
 /**
  * utility class that can be used by {@link WorldModule}s

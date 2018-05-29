@@ -2,12 +2,19 @@ package org.osm2world.core.world.modules;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
+import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+
+import org.apache.commons.configuration2.BaseConfiguration;
+import org.apache.commons.configuration2.BaseHierarchicalConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.junit.Test;
 import org.osm2world.openstreetmap.data.MapBasedTagGroup;
 import org.osm2world.openstreetmap.data.Tag;
@@ -41,16 +48,20 @@ public class PowerModuleTest {
 		
 		/* render to multiple targets */
 		
-		ConversionFacade cf = new ConversionFacade();
+		ConversionFacade cf = new ConversionFacade(osmData, new BaseConfiguration());
 		
 		StatisticsTarget t1 = new StatisticsTarget();
 		StatisticsTarget t2 = new StatisticsTarget();
 		
 		List<Target<?>> targets = Arrays.<Target<?>>asList(t1, t2);
-		List<WorldModule> modules = Collections.<WorldModule>singletonList(new PowerModule());
-		
-		cf.createRepresentations(osmData, modules, null, targets);
-		
+		//List<WorldModule> modules = Collections.<WorldModule>singletonList(new PowerModule());
+        BaseHierarchicalConfiguration moduleconfig = new BaseHierarchicalConfiguration();
+		moduleconfig.setProperty("modules.module(0).name","PowerModule");
+        ConversionFacade.Results results = cf.createRepresentations(moduleconfig, null);
+		cf.render(results,targets);
+		PowerModule powerModule = (PowerModule) cf.getModule("PowerModule");
+		assertNotNull(powerModule);
+		assertNull(cf.getModule("RoadModule"));
 		/* check whether the results are the same each time */
 		
 		for (Stat stat : Stat.values()) {

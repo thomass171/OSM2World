@@ -1,7 +1,8 @@
-package org.openstreetmap.josm.plugins.graphview.util;
+package org.osm2world.openstreetmap.util;
 
 import static org.junit.Assert.*;
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.*;
+import static org.osm2world.openstreetmap.util.ValueStringParser.*;
+
 
 import java.awt.Color;
 

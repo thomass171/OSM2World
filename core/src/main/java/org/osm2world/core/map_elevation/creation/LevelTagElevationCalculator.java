@@ -1,8 +1,9 @@
 package org.osm2world.core.map_elevation.creation;
 
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseOsmDecimal;
 
 import org.osm2world.openstreetmap.data.TagGroup;
+
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseOsmDecimal;
 
 /**
  * sets elevations based on level tags

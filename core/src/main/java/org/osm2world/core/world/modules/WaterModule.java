@@ -11,6 +11,7 @@ import static org.osm2world.core.target.common.material.TexCoordUtil.*;
 import static org.osm2world.core.util.Predicates.hasType;
 import static org.osm2world.core.world.modules.common.WorldModuleGeometryUtil.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +46,7 @@ import org.osm2world.core.world.network.NetworkAreaWorldObject;
  * adds water bodies, streams, rivers and fountains to the world
  */
 public class WaterModule extends ConfigurableWorldModule {
-
+	List<Waterway> rivers = new ArrayList<>();
 	//TODO: add canal, ditch, drain
 
 	private static final Tag WATER_TAG = new Tag("natural", "water");
@@ -70,7 +71,9 @@ public class WaterModule extends ConfigurableWorldModule {
 		for (MapWaySegment line : mapData.getMapWaySegments()) {
 			for (String value : WATERWAY_WIDTHS.keySet()) {
 				if (line.getTags().contains("waterway", value)) {
-					line.addRepresentation(new Waterway(line));
+					Waterway waterway = new Waterway(line);
+					line.addRepresentation(waterway);
+					rivers.add(waterway);
 				}
 			}
 		}

@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.configuration2.Configuration;
 import org.osm2world.core.math.TriangleXYZ;
 import org.osm2world.core.math.TriangleXYZWithNormals;
 import org.osm2world.core.math.VectorXYZ;

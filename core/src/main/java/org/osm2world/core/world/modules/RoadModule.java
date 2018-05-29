@@ -5,7 +5,6 @@ import static java.lang.Math.max;
 import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 import static org.osm2world.openstreetmap.data.EmptyTagGroup.EMPTY_TAG_GROUP;
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseOsmDecimal;
 import static org.osm2world.core.map_elevation.creation.EleConstraintEnforcer.ConstraintType.*;
 import static org.osm2world.core.math.GeometryUtil.interpolateElevation;
 import static org.osm2world.core.math.VectorXYZ.*;
@@ -14,6 +13,7 @@ import static org.osm2world.core.target.common.material.NamedTexCoordFunction.*;
 import static org.osm2world.core.target.common.material.TexCoordUtil.*;
 import static org.osm2world.core.world.modules.common.WorldModuleGeometryUtil.*;
 import static org.osm2world.core.world.modules.common.WorldModuleParseUtil.parseWidth;
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseOsmDecimal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,10 +61,13 @@ public class RoadModule extends ConfigurableWorldModule {
 	
 	@Override
 	public void applyTo(MapData grid) {
+		List<Road> roads = new ArrayList<>();
 		
 		for (MapWaySegment line : grid.getMapWaySegments()) {
 			if (isRoad(line.getTags())) {
-				line.addRepresentation(new Road(line, line.getTags()));
+				Road road = new Road(line, line.getTags());
+				line.addRepresentation(road);
+				roads.add(road);
 			}
 		}
 

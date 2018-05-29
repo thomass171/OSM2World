@@ -2,13 +2,13 @@ package org.osm2world.core.world.modules;
 
 import static java.awt.Color.ORANGE;
 import static java.util.Collections.nCopies;
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseColor;
 import static org.osm2world.core.math.GeometryUtil.equallyDistributePointsAlong;
 import static org.osm2world.core.math.VectorXYZ.Y_UNIT;
 import static org.osm2world.core.target.common.material.Materials.*;
 import static org.osm2world.core.target.common.material.NamedTexCoordFunction.GLOBAL_X_Z;
 import static org.osm2world.core.target.common.material.TexCoordUtil.triangleTexCoordLists;
 import static org.osm2world.core.world.modules.common.WorldModuleParseUtil.parseHeight;
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseColor;
 
 import java.awt.Color;
 import java.util.ArrayList;

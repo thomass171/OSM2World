@@ -2,11 +2,11 @@ package org.osm2world.core.world.network;
 
 import static java.lang.Double.*;
 import static java.util.Collections.emptyList;
-import static org.openstreetmap.josm.plugins.graphview.core.util.ValueStringParser.parseIncline;
 import static org.osm2world.core.map_elevation.creation.EleConstraintEnforcer.ConstraintType.*;
 import static org.osm2world.core.map_elevation.data.GroundState.*;
 import static org.osm2world.core.math.GeometryUtil.interpolateBetween;
 import static org.osm2world.core.math.VectorXZ.distanceSquared;
+import static org.osm2world.openstreetmap.util.ValueStringParser.parseIncline;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -112,9 +112,10 @@ public class StatisticsTarget extends
 				} else {
 					vertexCount = 3 * (vs.size() - 2);
 				}
-				throw new RuntimeException ("no JOGLRendererVBO");
+				//TODO should be warning? throw new RuntimeException ("no JOGLRendererVBO");
 				//return vertexCount *
 				//	JOGLRendererVBO.getValuesPerVertex(material);
+				return vertexCount;
 				
 			}
 		});

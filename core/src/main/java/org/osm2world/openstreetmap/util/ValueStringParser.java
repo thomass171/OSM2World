@@ -1,4 +1,4 @@
-package org.openstreetmap.josm.plugins.graphview.core.util;
+package org.osm2world.openstreetmap.util;
 
 import java.awt.Color;
 import java.util.regex.Matcher;

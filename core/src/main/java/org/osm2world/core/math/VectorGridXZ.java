@@ -1,5 +1,8 @@
 package org.osm2world.core.math;
 
+import org.apache.commons.collections.iterators.ArrayIterator;
+import org.apache.commons.collections.iterators.IteratorChain;
+
 import static java.lang.Math.*;
 
 import java.util.ArrayList;
@@ -7,8 +10,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.iterators.ArrayIterator;
-import org.apache.commons.collections.iterators.IteratorChain;
 
 /**
  * regular grid of {@link VectorXZ}.
