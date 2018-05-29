@@ -21,7 +21,6 @@ import org.osm2world.core.ConversionFacade.Results;
 import org.osm2world.core.map_data.creation.LatLon;
 import org.osm2world.core.map_data.creation.MapProjection;
 import org.osm2world.core.map_elevation.creation.EleConstraintEnforcer;
-import org.osm2world.core.map_elevation.creation.LPEleConstraintEnforcer;
 import org.osm2world.core.map_elevation.creation.LeastSquaresInterpolator;
 import org.osm2world.core.map_elevation.creation.NaturalNeighborInterpolator;
 import org.osm2world.core.map_elevation.creation.NoneEleConstraintEnforcer;
@@ -39,7 +38,6 @@ import org.osm2world.core.target.common.rendering.OrthoTilesUtil;
 import org.osm2world.core.target.common.rendering.OrthoTilesUtil.CardinalDirection;
 import org.osm2world.core.target.common.rendering.Projection;
 import org.osm2world.core.target.obj.ObjWriter;
-import org.osm2world.core.target.povray.POVRayWriter;
 import org.osm2world.core.util.functions.DefaultFactory;
 
 public final class Output {
@@ -121,13 +119,14 @@ public final class Output {
 			cf.setEleConstraintEnforcerFactory(
 					new DefaultFactory<EleConstraintEnforcer>(SimpleEleConstraintEnforcer.class));
 		} else if ("LPEleConstraintEnforcer".equals(enforcerType)) {
-			cf.setEleConstraintEnforcerFactory(
-					new DefaultFactory<EleConstraintEnforcer>(LPEleConstraintEnforcer.class));
+			throw new RuntimeException("LPEleConstraintEnforcer not available");
+			//cf.setEleConstraintEnforcerFactory(
+			//		new DefaultFactory<EleConstraintEnforcer>(LPEleConstraintEnforcer.class));
 		}
 		
 		Results results = cf.createRepresentations(dataReader.getData(), null, config, null);
 		
-		ImageExporter exporter = null;
+		//ImageExporter exporter = null;
 		
 		for (CLIArguments args : argumentsGroup.getCLIArgumentsList()) {
 			
@@ -207,14 +206,16 @@ public final class Output {
 					break;
 					
 				case POV:
-					POVRayWriter.writePOVInstructionFile(outputFile,
+					throw new RuntimeException("no povray");
+					/*POVRayWriter.writePOVInstructionFile(outputFile,
 							results.getMapData(), camera, projection);
-					break;
+					break;*/
 					
 				case PNG:
 				case PPM:
 				case GD:
-					if (camera == null || projection == null) {
+					throw new RuntimeException("no ImageExporter");
+					/*if (camera == null || projection == null) {
 						System.err.println("camera or projection missing");
 					}
 					if (exporter == null) {
@@ -225,17 +226,17 @@ public final class Output {
 							args.getResolution().x, args.getResolution().y,
 							camera, projection);
 					break;
-					
+					*/
 				}
 				
 			}
 			
 		}
 		
-		if (exporter != null) {
+		/*if (exporter != null) {
 			exporter.freeResources();
 			exporter = null;
-		}
+		}*/
 		
 		if (argumentsGroup.getRepresentative().getPerformancePrint()) {
 			long timeSec = (System.currentTimeMillis() - start) / 1000;

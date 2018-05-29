@@ -18,7 +18,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.osm2world.console.CLIArgumentsUtil.ProgramMode;
 import org.osm2world.core.GlobalValues;
-import org.osm2world.viewer.view.ViewerFrame;
+
 
 import uk.co.flamingpenguin.jewel.cli.ArgumentValidationException;
 import uk.co.flamingpenguin.jewel.cli.CliFactory;
@@ -184,7 +184,8 @@ public class OSM2World {
 			break;
 		
 		case GUI:
-			try {
+			throw new RuntimeException("No gui available");
+			/*try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			} catch(Exception e) {
 				System.out.println("Error setting native look and feel: " + e);
@@ -192,7 +193,7 @@ public class OSM2World {
 			File input = representativeArgs.isInput() ?
 					representativeArgs.getInput() : null;
 			new ViewerFrame(config, configFile, input).setVisible(true);
-			break;
+			break;*/
 			
 		case CONVERT:
 			try {

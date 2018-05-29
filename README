@@ -1,1 +1,9 @@
-OSM2World is an Open Source converter that creates three-dimensional models of the world in various formats from OpenStreetMap data. Visit the project website at http://osm2world.org/ for documentation, downloads, screenshots and contact information!
+This is a clone/fork of the great https://github.com/tordanik/OSM2World. OSM2World is an Open Source converter that creates three-dimensional models of the world in various formats from OpenStreetMap data.
+Visit the project website at http://osm2world.org/ for documentation, downloads, screenshots and contact information!
+
+This clone provides:
+  - ant->maven with four modules. Separation of core representation creating and rendering (only core completed, rendering modules not yet compile clean).
+  - LPEleConstraintEnforcer deleted for now because of native libs
+  - povray removed from TreeModule
+  - No CLI option GUI in module core
+  - No image export in module core for now because of JOGL dependency

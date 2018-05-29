@@ -57,7 +57,7 @@ public class OSMFileDataSource implements
 		public void initialize(Map<String, Object> arg0) {
 			/* do nothing */
 		}
-		public void release() {
+		public void close() {
 			/* do nothing */
 		}
 		public void complete() {
