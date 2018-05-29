@@ -10,11 +10,10 @@
     <modules>
         <module>core</module>
         
-<!--not ready
+	<!--not ready -->
         <module>jogl</module>
         <module>povray</module>
         <module>viewer</module>
--->
     </modules>
 
     <dependencies>
