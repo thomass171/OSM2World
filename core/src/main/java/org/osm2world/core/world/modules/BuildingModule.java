@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osm2world.core.target.OsmOrigin;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.openstreetmap.data.TagGroup;
 import org.osm2world.core.map_data.data.MapArea;
 import org.osm2world.core.map_data.data.MapData;
@@ -377,7 +379,7 @@ public class BuildingModule extends ConfigurableWorldModule {
 			}
 				
 			target.drawTriangles(materialWall, trianglesXYZ,
-					triangleTexCoordLists(trianglesXYZ, materialWall, GLOBAL_X_Z));
+					triangleTexCoordLists(trianglesXYZ, materialWall, GLOBAL_X_Z), new OsmOrigin(getPolygon()));
 			
 		}
 
@@ -646,8 +648,8 @@ public class BuildingModule extends ConfigurableWorldModule {
 								
 			}
 
-			target.drawTriangleStrip(materialWallWithWindows, mainWallVectors,
-					mainWallTexCoordLists);
+			target.drawTriangleStrip(materialWallWithWindows, new VectorXYZList(mainWallVectors),
+					mainWallTexCoordLists,null);
 			
 			drawStripWithoutDegenerates(target, materialWall, roofWallVectors,
 					texCoordLists(roofWallVectors, materialWall, STRIP_WALL));
@@ -996,7 +998,7 @@ public class BuildingModule extends ConfigurableWorldModule {
 			}
 			
 			if (triangles.size() > 0) {
-				target.drawTriangles(material, triangles, triangleTexCoordLists);
+				target.drawTriangles(material, triangles, triangleTexCoordLists,null);
 			}
 			
 		}
@@ -1383,7 +1385,7 @@ public class BuildingModule extends ConfigurableWorldModule {
 				
 				target.drawTriangles(materialRoof, trianglesXYZ,
 						triangleTexCoordLists(trianglesXYZ,
-								materialRoof, SLOPED_TRIANGLES));
+								materialRoof, SLOPED_TRIANGLES), new OsmOrigin(getPolygon()));
 				
 			}
 			

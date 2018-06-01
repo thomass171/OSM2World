@@ -48,7 +48,7 @@ public class PowerModuleTest {
 		
 		/* render to multiple targets */
 		
-		ConversionFacade cf = new ConversionFacade(osmData, new BaseConfiguration());
+		ConversionFacade cf = new ConversionFacade(osmData);
 		
 		StatisticsTarget t1 = new StatisticsTarget();
 		StatisticsTarget t2 = new StatisticsTarget();
@@ -57,7 +57,7 @@ public class PowerModuleTest {
 		//List<WorldModule> modules = Collections.<WorldModule>singletonList(new PowerModule());
         BaseHierarchicalConfiguration moduleconfig = new BaseHierarchicalConfiguration();
 		moduleconfig.setProperty("modules.module(0).name","PowerModule");
-        ConversionFacade.Results results = cf.createRepresentations(moduleconfig, null);
+        ConversionFacade.Results results = cf.createRepresentations(moduleconfig);
 		cf.render(results,targets);
 		PowerModule powerModule = (PowerModule) cf.getModule("PowerModule");
 		assertNotNull(powerModule);

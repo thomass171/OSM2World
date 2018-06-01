@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.osm2world.core.map_data.data.MapArea;
 import org.osm2world.core.map_elevation.data.GroundState;
 import org.osm2world.core.math.TriangleXYZ;
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.core.target.RenderableToAllTargets;
 import org.osm2world.core.target.Target;
 import org.osm2world.core.target.common.material.Material;
@@ -55,7 +56,7 @@ public class ParkingModule extends AbstractModule {
 			Collection<TriangleXYZ> triangles = getTriangulation();
 			
 			target.drawTriangles(material, triangles,
-					triangleTexCoordLists(triangles, material, GLOBAL_X_Z));
+					triangleTexCoordLists(triangles, material, GLOBAL_X_Z), new OsmOrigin("Parking",area,getOutlinePolygonXZ()));
 			
 		}
 		

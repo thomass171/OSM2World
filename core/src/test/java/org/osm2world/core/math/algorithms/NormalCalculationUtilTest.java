@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.osm2world.core.math.VectorXYZ;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 
 public class NormalCalculationUtilTest {
@@ -24,7 +25,7 @@ public class NormalCalculationUtilTest {
 				);
 		
 		List<VectorXYZ> normals =
-				NormalCalculationUtil.calculateTriangleStripNormals(vs, true);
+				NormalCalculationUtil.calculateTriangleStripNormals(new VectorXYZList(vs), true).vs;
 		
 		assertEquals(4, normals.size());
 		assertAlmostEquals(Y_UNIT, normals.get(2));
@@ -43,7 +44,7 @@ public class NormalCalculationUtilTest {
 				);
 		
 		List<VectorXYZ> normals =
-				NormalCalculationUtil.calculateTriangleFanNormals(vs, true);
+				NormalCalculationUtil.calculateTriangleFanNormals(new VectorXYZList(vs), true).vs;
 		
 		assertEquals(4, normals.size());
 		assertAlmostEquals(Y_UNIT, normals.get(2));

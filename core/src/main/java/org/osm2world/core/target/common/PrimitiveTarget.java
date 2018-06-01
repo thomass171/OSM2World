@@ -11,9 +11,11 @@ import org.osm2world.core.math.TriangleXYZ;
 import org.osm2world.core.math.TriangleXYZWithNormals;
 import org.osm2world.core.math.VectorXYZ;
 import org.osm2world.core.math.VectorXZ;
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.core.target.Renderable;
 import org.osm2world.core.target.common.material.Material;
 import org.osm2world.core.target.common.material.Material.Interpolation;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 /**
  * superclass for targets that are based on OpenGL primitives.
@@ -35,11 +37,11 @@ public abstract class PrimitiveTarget<R extends Renderable>
 			List<List<VectorXZ>> texCoordLists);
 	
 	@Override
-	public void drawTriangleStrip(Material material, List<VectorXYZ> vs,
-			List<List<VectorXZ>> texCoordLists) {
+	public void drawTriangleStrip(Material material, VectorXYZList vs,
+			List<List<VectorXZ>> texCoordLists, OsmOrigin rawRenderData) {
 		boolean smooth = (material.getInterpolation() == Interpolation.SMOOTH);
-		drawPrimitive(TRIANGLE_STRIP, material, vs,
-				calculateTriangleStripNormals(vs, smooth),
+		drawPrimitive(TRIANGLE_STRIP, material, vs.vs,
+				calculateTriangleStripNormals(vs, smooth).vs,
 				texCoordLists);
 	}
 
@@ -48,14 +50,14 @@ public abstract class PrimitiveTarget<R extends Renderable>
 			List<List<VectorXZ>> texCoordLists) {
 		boolean smooth = (material.getInterpolation() == Interpolation.SMOOTH);
 		drawPrimitive(TRIANGLE_FAN, material, vs,
-				calculateTriangleFanNormals(vs, smooth),
+				calculateTriangleFanNormals(new VectorXYZList(vs), smooth).vs,
 				texCoordLists);
 	}
 	
 	@Override
 	public void drawTriangles(Material material,
 			Collection<? extends TriangleXYZ> triangles,
-			List<List<VectorXZ>> texCoordLists) {
+			List<List<VectorXZ>> texCoordLists, OsmOrigin rawRenderData) {
 		
 		List<VectorXYZ> vectors = new ArrayList<VectorXYZ>(triangles.size()*3);
 		

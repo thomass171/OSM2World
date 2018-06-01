@@ -94,12 +94,12 @@ public final class Output {
 			 
 		}
 		
-		ConversionFacade cf = new ConversionFacade(dataReader.getData(),config);
+		ConversionFacade cf = new ConversionFacade(dataReader.getData());
 		PerformanceListener perfListener =
 			new PerformanceListener(argumentsGroup.getRepresentative());
 		cf.addProgressListener(perfListener);
 		
-		Results results = cf.createRepresentations(null,null);
+		Results results = cf.createRepresentations(null);
 		
 		//ImageExporter exporter = null;
 		

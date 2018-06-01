@@ -19,6 +19,7 @@ import org.osm2world.core.math.TriangleXYZ;
 import org.osm2world.core.math.VectorXYZ;
 import org.osm2world.core.math.VectorXZ;
 import org.osm2world.core.math.algorithms.PolygonUtil;
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.core.target.RenderableToAllTargets;
 import org.osm2world.core.target.Target;
 import org.osm2world.core.target.common.TextureData;
@@ -28,6 +29,7 @@ import org.osm2world.core.target.common.material.TexCoordFunction;
 import org.osm2world.core.world.data.AbstractAreaWorldObject;
 import org.osm2world.core.world.data.TerrainBoundaryWorldObject;
 import org.osm2world.core.world.modules.common.AbstractModule;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 /**
  * adds pitches for various sports to the map
@@ -104,14 +106,14 @@ public class SportsModule extends AbstractModule {
 				Material material = getPitchMaterial();
 				
 				target.drawTriangles(material, triangles,
-						triangleTexCoordLists(triangles, material, texFunction));
+						triangleTexCoordLists(triangles, material, texFunction), new OsmOrigin("Sports.Pitch",area,getOutlinePolygonXZ()));
 				
 			} else {
 
 				Material material = getFallbackPitchMaterial();
 				
 				target.drawTriangles(material, triangles,
-						triangleTexCoordLists(triangles, material, NamedTexCoordFunction.GLOBAL_X_Z));
+						triangleTexCoordLists(triangles, material, NamedTexCoordFunction.GLOBAL_X_Z), new OsmOrigin("Sports.Pitch",area,getOutlinePolygonXZ()));
 				
 			}
 			
@@ -419,11 +421,11 @@ public class SportsModule extends AbstractModule {
 										
 				}
 				
-				target.drawTriangleStrip(TENNIS_NET, verticesNet,
-						texCoordLists(verticesNet, TENNIS_NET, STRIP_FIT_HEIGHT));
+				target.drawTriangleStrip(TENNIS_NET,new VectorXYZList( verticesNet),
+						texCoordLists(verticesNet, TENNIS_NET, STRIP_FIT_HEIGHT),null);
 
-				target.drawTriangleStrip(TENNIS_NET, verticesNetBack,
-						texCoordLists(verticesNetBack, TENNIS_NET, STRIP_FIT_HEIGHT));
+				target.drawTriangleStrip(TENNIS_NET, new VectorXYZList(verticesNetBack),
+						texCoordLists(verticesNetBack, TENNIS_NET, STRIP_FIT_HEIGHT),null);
 				
 			}
 			

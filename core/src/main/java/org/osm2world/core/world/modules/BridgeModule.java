@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.openstreetmap.data.TagGroup;
 import org.osm2world.core.map_data.data.MapWaySegment;
 import org.osm2world.core.map_data.data.overlaps.MapIntersectionWW;
@@ -97,16 +98,16 @@ public class BridgeModule extends AbstractModule {
 			List<VectorXYZ> belowLeftOutline = sequenceAbove(leftOutline, -BRIDGE_UNDERSIDE_HEIGHT);
 			List<VectorXYZ> belowRightOutline = sequenceAbove(rightOutline, -BRIDGE_UNDERSIDE_HEIGHT);
 			
-			List<VectorXYZ> strip1 = createTriangleStripBetween(
+			VectorXYZList strip1 = createTriangleStripBetween(
 					belowLeftOutline, leftOutline);
-			List<VectorXYZ> strip2 = createTriangleStripBetween(
+			VectorXYZList strip2 = createTriangleStripBetween(
 					belowRightOutline, belowLeftOutline);
-			List<VectorXYZ> strip3 = createTriangleStripBetween(
+			VectorXYZList strip3 = createTriangleStripBetween(
 					rightOutline, belowRightOutline);
 			
-			target.drawTriangleStrip(Materials.BRIDGE_DEFAULT, strip1, null);
-			target.drawTriangleStrip(Materials.BRIDGE_DEFAULT, strip2, null);
-			target.drawTriangleStrip(Materials.BRIDGE_DEFAULT, strip3, null);
+			target.drawTriangleStrip(Materials.BRIDGE_DEFAULT, strip1, null,null);
+			target.drawTriangleStrip(Materials.BRIDGE_DEFAULT, strip2, null,null);
+			target.drawTriangleStrip(Materials.BRIDGE_DEFAULT, strip3, null,null);
 			
 		}
 

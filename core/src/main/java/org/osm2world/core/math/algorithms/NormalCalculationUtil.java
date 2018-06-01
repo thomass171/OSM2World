@@ -11,6 +11,7 @@ import java.util.Map;
 import org.osm2world.core.math.TriangleXYZ;
 import org.osm2world.core.math.TriangleXYZWithNormals;
 import org.osm2world.core.math.VectorXYZ;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 public final class NormalCalculationUtil {
 
@@ -55,25 +56,25 @@ public final class NormalCalculationUtil {
 	}
 
 
-	public static final List<VectorXYZ> calculateTriangleStripNormals(
-			List<VectorXYZ> vertices, boolean smooth) {
+	public static final VectorXYZList calculateTriangleStripNormals(
+			VectorXYZList vertices, boolean smooth) {
 		
-		assert vertices.size() >= 3;
+		assert vertices.vs.size() >= 3;
 		
-		VectorXYZ[] normals = calculatePerTriangleNormals(vertices, false);
-		return asList(normals);
+		VectorXYZ[] normals = calculatePerTriangleNormals(vertices.vs, false);
+		return new VectorXYZList(asList(normals));
 		
 		//TODO: implement smooth case
 		
 	}
 	
-	public static final List<VectorXYZ> calculateTriangleFanNormals(
-			List<VectorXYZ> vertices, boolean smooth) {
+	public static final VectorXYZList calculateTriangleFanNormals(
+			VectorXYZList vertices, boolean smooth) {
 		
-		assert vertices.size() >= 3;
+		assert vertices.vs.size() >= 3;
 		
-		VectorXYZ[] normals = calculatePerTriangleNormals(vertices, true);
-		return asList(normals);
+		VectorXYZ[] normals = calculatePerTriangleNormals(vertices.vs, true);
+		return new VectorXYZList(asList(normals));
 
 		//TODO: implement smooth case
 		

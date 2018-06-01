@@ -29,7 +29,7 @@ public final class WorldModuleGeometryUtil {
 	 * creates the vectors for a vertical triangle strip
 	 * at a given elevation above a line of points
 	 */
-	public static final List<VectorXYZ> createVerticalTriangleStrip(
+	public static final VectorXYZList createVerticalTriangleStrip(
 			List<? extends VectorXYZ> baseLine, float stripLowerYBound, float stripUpperYBound) {
 
 		VectorXYZ[] result = new VectorXYZ[baseLine.size() * 2];
@@ -50,14 +50,14 @@ public final class WorldModuleGeometryUtil {
 
 		}
 		
-		return asList(result);
+		return new VectorXYZList(asList(result));
 		
 	}
 
 	/**
 	 * creates a triangle strip between two outlines with identical number of vectors
 	 */
-	public static final List<VectorXYZ> createTriangleStripBetween(
+	public static final VectorXYZList createTriangleStripBetween(
 			List<VectorXYZ> leftOutline, List<VectorXYZ> rightOutline) {
 
 		assert leftOutline.size() == rightOutline.size();
@@ -69,7 +69,7 @@ public final class WorldModuleGeometryUtil {
 			vs[i*2+1] = rightOutline.get(i);
 		}
 		
-		return asList(vs);
+		return VectorXYZList.buildTriangleStrip(asList(vs),leftOutline, rightOutline);
 		
 	}
 			
@@ -100,18 +100,18 @@ public final class WorldModuleGeometryUtil {
 	 * 
 	 * @param angle  rotation angle in degrees
 	 */
-	public static final List<VectorXYZ> rotateShapeX(List<VectorXYZ> shape,
+	public static final VectorXYZList rotateShapeX(VectorXYZList shape,
 			double angle, double posY, double posZ) {
 		
-		VectorXYZ[] result = new VectorXYZ[shape.size()];
+		VectorXYZ[] result = new VectorXYZ[shape.vs.size()];
 
-		for (int i = 0; i < shape.size(); ++i) {
-			result[i] = shape.get(i).add(0f, -posY, -posZ);
+		for (int i = 0; i < shape.vs.size(); ++i) {
+			result[i] = shape.vs.get(i).add(0f, -posY, -posZ);
 			result[i] = result[i].rotateX(toRadians(angle));
 			result[i] = result[i].add(0f, posY, posZ);
 		}
 		
-		return asList(result);
+		return new VectorXYZList(asList(result));
 		
 	}
 	

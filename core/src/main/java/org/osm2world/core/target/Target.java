@@ -16,6 +16,7 @@ import org.osm2world.core.math.shapes.SimpleClosedShapeXZ;
 import org.osm2world.core.target.common.ExtrudeOption;
 import org.osm2world.core.target.common.material.Material;
 import org.osm2world.core.world.data.WorldObject;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 /**
  * A sink for rendering/writing {@link WorldObject}s to.
@@ -55,12 +56,12 @@ public interface Target<R extends Renderable> {
 	 */
 	void drawTriangles(Material material,
 			Collection<? extends TriangleXYZ> triangles,
-			List<List<VectorXZ>> texCoordLists);
+			List<List<VectorXZ>> texCoordLists, OsmOrigin rawRenderData);
 	
 	/**
 	 * draws triangles with explicitly defined normal vectors.
 	 * 
-	 * @see #drawTriangles(Material, Collection, List)
+	 * @see #drawTriangles(Material, Collection, List, OsmOrigin)
 	 */
 	void drawTrianglesWithNormals(Material material,
 			Collection<? extends TriangleXYZWithNormals> triangles,
@@ -74,13 +75,13 @@ public interface Target<R extends Renderable> {
 	 *          Each must have the same length as the "vs" parameter.
 	 *          Can be null if no texturing information is available.
 	 */
-	void drawTriangleStrip(Material material, List<VectorXYZ> vs,
-			List<List<VectorXZ>> texCoordLists);
+	void drawTriangleStrip(Material material, VectorXYZList vs,
+			List<List<VectorXZ>> texCoordLists, OsmOrigin rawRenderData);
 	
 	/**
 	 * draws a triangle fan.
 	 * 
-	 * @see #drawTriangleStrip(Material, List, List)
+	 * @see #drawTriangleStrip(Material, List, List, OsmOrigin)
 	 */
 	void drawTriangleFan(Material material, List<VectorXYZ> vs,
 			List<List<VectorXZ>> texCoordLists);

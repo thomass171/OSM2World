@@ -21,6 +21,7 @@ import org.osm2world.core.target.common.TextureData;
 import org.osm2world.core.target.common.material.Material;
 import org.osm2world.core.world.data.NoOutlineNodeWorldObject;
 import org.osm2world.core.world.modules.common.AbstractModule;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 
 /**
@@ -274,13 +275,13 @@ public class TrafficSignModule extends AbstractModule {
 				TrafficSignType type = types.get(sign);
 				List<VectorXYZ> vs = signGeometries.get(sign);
 				
-				target.drawTriangleStrip(type.material, vs,
-						texCoordLists(vs, type.material, STRIP_FIT));
+				target.drawTriangleStrip(type.material, new VectorXYZList(vs),
+						texCoordLists(vs, type.material, STRIP_FIT),null);
 				
 				vs = asList(vs.get(2), vs.get(3), vs.get(0), vs.get(1));
 				
-				target.drawTriangleStrip(STEEL, vs,
-						texCoordLists(vs, STEEL, STRIP_FIT));
+				target.drawTriangleStrip(STEEL, new VectorXYZList(vs),
+						texCoordLists(vs, STEEL, STRIP_FIT),null);
 			
 			}
 			

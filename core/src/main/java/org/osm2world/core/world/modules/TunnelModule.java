@@ -9,6 +9,7 @@ import static org.osm2world.core.world.modules.common.WorldModuleGeometryUtil.cr
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.openstreetmap.data.TagGroup;
 import org.osm2world.core.map_data.data.MapAreaSegment;
 import org.osm2world.core.map_data.data.MapNode;
@@ -159,17 +160,17 @@ public class TunnelModule extends AbstractModule {
 				aboveRightOutline.add(rightOutline.get(i).add(clearingOffset));
 				
 			}
-			
-			List<VectorXYZ> strip1 = createTriangleStripBetween(
+
+			VectorXYZList strip1 = createTriangleStripBetween(
 					rightOutline, aboveRightOutline);
-			List<VectorXYZ> strip2 = createTriangleStripBetween(
+			VectorXYZList strip2 = createTriangleStripBetween(
 					aboveRightOutline, aboveLeftOutline);
-			List<VectorXYZ> strip3 = createTriangleStripBetween(
+			VectorXYZList strip3 = createTriangleStripBetween(
 					aboveLeftOutline, leftOutline);
 			
-			target.drawTriangleStrip(Materials.TUNNEL_DEFAULT, strip1, null);
-			target.drawTriangleStrip(Materials.TUNNEL_DEFAULT, strip2, null);
-			target.drawTriangleStrip(Materials.TUNNEL_DEFAULT, strip3, null);
+			target.drawTriangleStrip(Materials.TUNNEL_DEFAULT, strip1, null,null);
+			target.drawTriangleStrip(Materials.TUNNEL_DEFAULT, strip2, null,null);
+			target.drawTriangleStrip(Materials.TUNNEL_DEFAULT, strip3, null,null);
 					
 		}
 		

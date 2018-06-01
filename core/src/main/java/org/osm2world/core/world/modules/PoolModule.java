@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.openstreetmap.data.TagGroup;
 import org.osm2world.core.map_data.data.MapArea;
 import org.osm2world.core.map_data.data.MapData;
@@ -138,7 +139,7 @@ public class PoolModule extends ConfigurableWorldModule {
 			Collection<TriangleXYZ> triangles = getTriangulation();
 			
 			target.drawTriangles(PURIFIED_WATER, triangles,
-					triangleTexCoordLists(triangles, PURIFIED_WATER, GLOBAL_X_Z));
+					triangleTexCoordLists(triangles, PURIFIED_WATER, GLOBAL_X_Z), new OsmOrigin("Pool",area,getOutlinePolygonXZ()));
 
 			/* draw a small area around the pool */
 

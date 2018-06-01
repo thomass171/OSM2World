@@ -25,7 +25,7 @@ public class OSM2WorldTest {
         OSM2World osm2World = OSM2World.buildInstance(testFile, null);
         assertNotNull(osm2World.getData());
         ConversionFacade cf = osm2World.getConversionFacade();
-        ConversionFacade.Results results = cf.createRepresentations(null,null);
+        ConversionFacade.Results results = cf.createRepresentations(null);
         //assertFalse(CLIArgumentsGroup.isCompatible(cliArgs1, cliArgs3));
 
     }

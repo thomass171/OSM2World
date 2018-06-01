@@ -73,21 +73,18 @@ import org.osm2world.core.world.modules.WaterModule;
 public class ConversionFacade {
     OSMData osmData = null;
     MapData mapData=null;
-    Configuration defaultconfig;
-    CompositeConfiguration compositeConfiguration;
     List<WorldModule> worldModules = null;
     OriginMapProjection mapProjection=null;
     
     /**
      *
      */
-    public ConversionFacade(OSMData osmData, Configuration defaultconfig) {
+    public ConversionFacade(OSMData osmData) {
         if (osmData == null) {
             throw new IllegalArgumentException("osmData must not be null");
         }
 
         this.osmData = osmData;
-        this.defaultconfig = defaultconfig;
     }
 
     /**
@@ -189,7 +186,7 @@ public class ConversionFacade {
     /**
      * sets the factory that will make {@link MapProjection}
      * instances during subsequent calls to
-     * {@link #createRepresentations(HierarchicalConfiguration, Configuration)}.
+     * {@link #createRepresentations(HierarchicalConfiguration)}.
      *
      * @see DefaultFactory
      */
@@ -201,7 +198,7 @@ public class ConversionFacade {
     /**
      * sets the factory that will make {@link EleConstraintEnforcer}
      * instances during subsequent calls to
-     * {@link #createRepresentations(HierarchicalConfiguration, Configuration)}.
+     * {@link #createRepresentations(HierarchicalConfiguration)}.
      *
      * @see DefaultFactory
      */
@@ -213,7 +210,7 @@ public class ConversionFacade {
     /**
      * sets the factory that will make {@link TerrainInterpolator}
      * instances during subsequent calls to
-     * {@link #createRepresentations(HierarchicalConfiguration, Configuration)}.
+     * {@link #createRepresentations(HierarchicalConfiguration)}.
      *
      * @see DefaultFactory
      */
@@ -226,7 +223,7 @@ public class ConversionFacade {
      * Extracted from createRepresentations.
      */
     public void render(ConversionFacade.Results results, List<Target<?>> targets){
-        boolean underground = compositeConfiguration.getBoolean("renderUnderground", true);
+        boolean underground = Config.getCurrentConfiguration().getBoolean("renderUnderground", true);
 
         if (targets != null) {
             for (Target<?> target : targets) {
@@ -240,21 +237,15 @@ public class ConversionFacade {
      * Use this when all data is already
      * in memory, for example with editor applications.
      * To obtain the data, you can use an {@link OSMDataReader}.
-     * Can be run multiple times wirh different configurations. modulelist is derived from configuration.
+     * Can be run multiple times with different configurations. modulelist is derived from configuration.
      * Rendering to targets extracted.
      * 
-     * @param userconfig   set of parameters that controls various aspects
-     *                     of the modules' behavior; null to use defaults only
      * @throws BoundingBoxSizeException for oversized bounding boxes
      */
-    public Results createRepresentations(HierarchicalConfiguration moduleconfig, Configuration userconfig)
+    public Results createRepresentations(HierarchicalConfiguration moduleconfig)
             throws IOException, BoundingBoxSizeException {
 
-        compositeConfiguration = new CompositeConfiguration();
-        if (userconfig != null) {
-            compositeConfiguration.addConfiguration(userconfig);
-        }
-        compositeConfiguration.addConfiguration(defaultconfig);
+        Configuration compositeConfiguration = Config.getCurrentConfiguration();       
         init(compositeConfiguration);
 
         Double maxBoundingBoxDegrees = compositeConfiguration.getDouble("maxBoundingBoxDegrees", null);
@@ -327,10 +318,6 @@ public class ConversionFacade {
 
         return new Results(mapProjection, mapData, eleData);
 
-    }
-
-    public CompositeConfiguration getUsedConfiguration(){
-        return compositeConfiguration;
     }
     
     /**

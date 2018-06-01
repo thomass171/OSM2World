@@ -39,5 +39,5 @@ public class OSMData {
 	public Collection<Bound> getBounds() {
 		return bounds;
 	}
-	
+    
 }

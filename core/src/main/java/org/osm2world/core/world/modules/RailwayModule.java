@@ -27,6 +27,7 @@ import org.osm2world.core.target.common.material.Material;
 import org.osm2world.core.target.common.material.Materials;
 import org.osm2world.core.world.data.TerrainBoundaryWorldObject;
 import org.osm2world.core.world.modules.common.ConfigurableWorldModule;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.core.world.modules.common.WorldModuleGeometryUtil;
 import org.osm2world.core.world.network.AbstractNetworkWaySegmentWorldObject;
 import org.osm2world.core.world.network.JunctionNodeWorldObject;
@@ -146,12 +147,12 @@ public class RailwayModule extends ConfigurableWorldModule {
 		public void renderTo(Target<?> target) {
 
 			/* draw ground */
-			
-			List<VectorXYZ> groundVs = WorldModuleGeometryUtil.createTriangleStripBetween(
+
+			VectorXYZList groundVs = WorldModuleGeometryUtil.createTriangleStripBetween(
 					getOutline(false), getOutline(true));
 			
 			target.drawTriangleStrip(Materials.RAIL_BALLAST_DEFAULT, groundVs,
-					texCoordLists(groundVs, Materials.RAIL_BALLAST_DEFAULT, GLOBAL_X_Z));
+					texCoordLists(groundVs.vs, Materials.RAIL_BALLAST_DEFAULT, GLOBAL_X_Z),null);
 			
 			
 			/* draw rails */

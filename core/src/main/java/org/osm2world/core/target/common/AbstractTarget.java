@@ -22,10 +22,12 @@ import org.osm2world.core.math.VectorXYZ;
 import org.osm2world.core.math.VectorXZ;
 import org.osm2world.core.math.shapes.ShapeXZ;
 import org.osm2world.core.math.shapes.SimpleClosedShapeXZ;
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.core.target.Renderable;
 import org.osm2world.core.target.Target;
 import org.osm2world.core.target.common.material.Material;
 import org.osm2world.core.world.data.WorldObject;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 /**
  * superclass for {@link Target} implementations that defines some
@@ -61,15 +63,15 @@ public abstract class AbstractTarget<R extends Renderable>
 					triangleVertices, point, frontVector, upVector);
 			
 			//TODO better default texture coordinate function
-			drawTriangleStrip(material, triangleVertices.subList(0, 3),
-					texCoordLists(triangleVertices.subList(0, 3), material, GLOBAL_X_Y));
+			drawTriangleStrip(material, new VectorXYZList(triangleVertices.subList(0, 3)),
+					texCoordLists(triangleVertices.subList(0, 3), material, GLOBAL_X_Y),null);
 			
 		}
 		
 	}
 	
 	/**
-	 * draws an extruded shape using {@link #drawTriangleStrip(Material, List, List)} calls.
+	 * draws an extruded shape using {@link #drawTriangleStrip(Material, List, List, OsmOrigin)} calls.
 	 * See {@link Target#drawExtrudedShape(Material, ShapeXZ, List, List, List, List, EnumSet)}
 	 * for documentation of the implemented interface method.
 	 */
@@ -192,7 +194,7 @@ public abstract class AbstractTarget<R extends Renderable>
 				stripTexCoords = texCoordLists(strip, material, STRIP_WALL);
 			}
 			
-			drawTriangleStrip(material, strip, stripTexCoords);
+			drawTriangleStrip(material, new VectorXYZList(strip), stripTexCoords,null);
 			
 		}
 		
@@ -285,8 +287,8 @@ public abstract class AbstractTarget<R extends Renderable>
 			texCoords2 = nCopies(material.getTextureDataList().size(), BOX_TEX_COORDS_2);
 		}
 		
-		drawTriangleStrip(material, vsStrip1, texCoords1);
-		drawTriangleStrip(material, vsStrip2, texCoords2);
+		drawTriangleStrip(material, new VectorXYZList(vsStrip1), texCoords1,null);
+		drawTriangleStrip(material, new VectorXYZList(vsStrip2), texCoords2,null);
 		
 	}
 	
@@ -358,14 +360,14 @@ public abstract class AbstractTarget<R extends Renderable>
 		if (drawTop) { drawTriangleFan(material, topFan,
 				texCoordLists(bottomFan, material, GLOBAL_X_Z)); }
 		
-		drawTriangleStrip(material, mantleStrip,
-				texCoordLists(mantleStrip, material, STRIP_WALL));
+		drawTriangleStrip(material, new VectorXYZList(mantleStrip),
+				texCoordLists(mantleStrip, material, STRIP_WALL),null);
 		
 	}
 	
 	@Override
-	public void drawTriangleStrip(Material material, List<VectorXYZ> vs,
-			List<List<VectorXZ>> texCoordLists) {
+	public void drawTriangleStrip(Material material, VectorXYZList vs,
+								  List<List<VectorXZ>> texCoordLists, OsmOrigin rawRenderData) {
 		
 		List<List<VectorXZ>> newTexCoordLists = emptyList();
 		if (texCoordLists != null && !texCoordLists.isEmpty()) {
@@ -376,7 +378,7 @@ public abstract class AbstractTarget<R extends Renderable>
 			}
 		}
 				
-		drawTriangles(material, trianglesFromTriangleStrip(vs), newTexCoordLists);
+		drawTriangles(material, trianglesFromTriangleStrip(vs.vs), newTexCoordLists,null);
 	}
 	
 	@Override
@@ -392,7 +394,7 @@ public abstract class AbstractTarget<R extends Renderable>
 			}
 		}
 		
-		drawTriangles(material, trianglesFromTriangleFan(vs), newTexCoordLists);
+		drawTriangles(material, trianglesFromTriangleFan(vs), newTexCoordLists,null);
 		
 	}
 	

@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.openstreetmap.data.TagGroup;
 import org.osm2world.core.map_data.data.MapNode;
 import org.osm2world.core.map_data.data.MapWaySegment;
@@ -300,25 +301,25 @@ public class BarrierModule extends AbstractModule {
 			/* render fence */
 			
 			List<VectorXYZ> pointsWithEle = getCenterline();
-			
-			List<VectorXYZ> vsFence = createVerticalTriangleStrip(
+
+			VectorXYZList vsFence = createVerticalTriangleStrip(
 					pointsWithEle, 0, height);
 			List<List<VectorXZ>> texCoordListsFence = texCoordLists(
-					vsFence, CHAIN_LINK_FENCE, STRIP_WALL);
+					vsFence.vs, CHAIN_LINK_FENCE, STRIP_WALL);
 			
-			target.drawTriangleStrip(CHAIN_LINK_FENCE, vsFence, texCoordListsFence);
+			target.drawTriangleStrip(CHAIN_LINK_FENCE, vsFence, texCoordListsFence, null);
 			
 			List<VectorXYZ> pointsWithEleBack =
 					new ArrayList<VectorXYZ>(pointsWithEle);
 			Collections.reverse(pointsWithEleBack);
 			
-			List<VectorXYZ> vsFenceBack = createVerticalTriangleStrip(
+			VectorXYZList vsFenceBack = createVerticalTriangleStrip(
 					pointsWithEleBack, 0, height);
 			List<List<VectorXZ>> texCoordListsFenceBack = texCoordLists(
-					vsFenceBack, CHAIN_LINK_FENCE, STRIP_WALL);
+					vsFenceBack.vs, CHAIN_LINK_FENCE, STRIP_WALL);
 			
 			target.drawTriangleStrip(CHAIN_LINK_FENCE, vsFenceBack,
-					texCoordListsFenceBack);
+					texCoordListsFenceBack, null);
 			
 			/* render poles */
 			
@@ -381,11 +382,11 @@ public class BarrierModule extends AbstractModule {
 				float barStartHeight = barEndHeight - barWidth;
 				
 				if (barStartHeight > 0) {
-					List<VectorXYZ> vsLowFront = createVerticalTriangleStrip(baseline, barStartHeight, barEndHeight);
-					List<VectorXYZ> vsLowBack = createVerticalTriangleStrip(baseline, barEndHeight, barStartHeight);
+					VectorXYZList vsLowFront = createVerticalTriangleStrip(baseline, barStartHeight, barEndHeight);
+					VectorXYZList vsLowBack = createVerticalTriangleStrip(baseline, barEndHeight, barStartHeight);
 					
-					target.drawTriangleStrip(material, vsLowFront, null);
-					target.drawTriangleStrip(material, vsLowBack, null);
+					target.drawTriangleStrip(material, vsLowFront, null, null);
+					target.drawTriangleStrip(material, vsLowBack, null, null);
 				}
 			}
 			

@@ -43,45 +43,45 @@ public final class WorldModuleBillboardUtil {
 		VectorXYZ zNegTop = zNegBottom.add(0, height, 0);
 		VectorXYZ posTop = pos.add(0, height, 0);
 		
-		target.drawTriangleStrip(material, asList(
-				xNegTop, xNegBottom, posTop, pos),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				xNegTop, xNegBottom, posTop, pos)),
 				buildBillboardTexCoordLists(false, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 		
-		target.drawTriangleStrip(material, asList(
-				xPosBottom, xPosTop, pos, posTop),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				xPosBottom, xPosTop, pos, posTop)),
 				buildBillboardTexCoordLists(true, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 
-		target.drawTriangleStrip(material, asList(
-				zNegTop, zNegBottom, posTop, pos),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				zNegTop, zNegBottom, posTop, pos)),
 				buildBillboardTexCoordLists(false, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 		
-		target.drawTriangleStrip(material, asList(
-				zPosBottom, zPosTop, pos, posTop),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				zPosBottom, zPosTop, pos, posTop)),
 				buildBillboardTexCoordLists(true, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 
-		target.drawTriangleStrip(material, asList(
-				xPosTop, xPosBottom, posTop, pos),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				xPosTop, xPosBottom, posTop, pos)),
 				buildBillboardTexCoordLists(false, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 		
-		target.drawTriangleStrip(material, asList(
-				xNegBottom, xNegTop, pos, posTop),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				xNegBottom, xNegTop, pos, posTop)),
 				buildBillboardTexCoordLists(true, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 
-		target.drawTriangleStrip(material, asList(
-				zPosTop, zPosBottom, posTop, pos),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				zPosTop, zPosBottom, posTop, pos)),
 				buildBillboardTexCoordLists(false, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 		
-		target.drawTriangleStrip(material, asList(
-				zNegBottom, zNegTop, pos, posTop),
+		target.drawTriangleStrip(material, new VectorXYZList(asList(
+				zNegBottom, zNegTop, pos, posTop)),
 				buildBillboardTexCoordLists(true, mirroredTextures,
-						material.getTextureDataList().size()));
+						material.getTextureDataList().size()), null);
 		
 	}
 	

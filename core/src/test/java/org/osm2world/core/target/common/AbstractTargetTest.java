@@ -23,6 +23,7 @@ import org.osm2world.core.math.VectorXYZ;
 import org.osm2world.core.math.VectorXZ;
 import org.osm2world.core.math.shapes.ShapeXZ;
 import org.osm2world.core.math.shapes.SimpleClosedShapeXZ;
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.core.target.RenderableToAllTargets;
 import org.osm2world.core.target.Target;
 import org.osm2world.core.target.common.material.Material;
@@ -53,7 +54,7 @@ public class AbstractTargetTest {
 
 		@Override
 		public void drawTriangles(Material material, Collection<? extends TriangleXYZ> triangles,
-				List<List<VectorXZ>> texCoordLists) {
+				List<List<VectorXZ>> texCoordLists, OsmOrigin rawRenderData) {
 			drawnTriangles.addAll(triangles);
 		}
 

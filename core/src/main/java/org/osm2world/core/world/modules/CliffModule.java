@@ -23,6 +23,7 @@ import org.osm2world.core.target.common.material.Material;
 import org.osm2world.core.target.common.material.Materials;
 import org.osm2world.core.world.data.TerrainBoundaryWorldObject;
 import org.osm2world.core.world.modules.common.ConfigurableWorldModule;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.core.world.network.AbstractNetworkWaySegmentWorldObject;
 
 /**
@@ -112,12 +113,12 @@ public class CliffModule extends ConfigurableWorldModule {
 		
 		@Override
 		public void renderTo(Target<?> target) {
-			
-			List<VectorXYZ> groundVs = createTriangleStripBetween(
+
+			VectorXYZList groundVs = createTriangleStripBetween(
 					getOutline(false), getOutline(true));
 			
 			target.drawTriangleStrip(getMaterial(), groundVs,
-					texCoordLists(groundVs, Materials.RAIL_BALLAST_DEFAULT, GLOBAL_X_Z));
+					texCoordLists(groundVs.vs, Materials.RAIL_BALLAST_DEFAULT, GLOBAL_X_Z), null);
 			
 		}
 		

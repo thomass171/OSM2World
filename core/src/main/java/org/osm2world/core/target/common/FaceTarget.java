@@ -12,6 +12,7 @@ import org.osm2world.core.math.TriangleXYZ;
 import org.osm2world.core.math.TriangleXYZWithNormals;
 import org.osm2world.core.math.VectorXYZ;
 import org.osm2world.core.math.VectorXZ;
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.core.target.Renderable;
 import org.osm2world.core.target.common.material.Material;
 import org.osm2world.core.world.data.WorldObject;
@@ -235,7 +236,7 @@ public abstract class FaceTarget<R extends Renderable>
 	@Override
 	public void drawTriangles(Material material,
 			Collection<? extends TriangleXYZ> triangles,
-			List<List<VectorXZ>> texCoordLists) {
+			List<List<VectorXZ>> texCoordLists, OsmOrigin rawRenderData) {
 		
 		int i = 0;
 		
@@ -271,7 +272,7 @@ public abstract class FaceTarget<R extends Renderable>
 			Collection<? extends TriangleXYZWithNormals> triangles,
 			List<List<VectorXZ>> texCoordLists) {
 		
-		drawTriangles(material, triangles, texCoordLists);
+		drawTriangles(material, triangles, texCoordLists, null);
 		
 		//TODO keep normals information
 		

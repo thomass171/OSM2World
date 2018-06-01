@@ -26,6 +26,7 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.osm2world.console.CLIArgumentsUtil.ProgramMode;
+import org.osm2world.core.Config;
 import org.osm2world.core.ConversionFacade;
 import org.osm2world.core.GlobalValues;
 
@@ -160,20 +161,7 @@ public class OSM2World {
 
     }
 
-    private static Configuration loadConfig(Reader inputstream) {
-        Configuration config = new BaseConfiguration();
-
-        try {
-            PropertiesConfiguration fileConfig = new PropertiesConfiguration();
-            fileConfig.read((inputstream));
-            //TODO really needed? fileConfig.setListDelimiter(';');
-            config = fileConfig;
-        } catch (Exception e) {
-            System.err.println("could not read config, ignoring it: ");
-            System.err.println(e);
-        }
-        return config;
-    }
+   
 
     private static void executeArgumentsGroup(CLIArgumentsGroup argumentsGroup) {
 		
@@ -184,11 +172,8 @@ public class OSM2World {
         CLIArguments representativeArgs = argumentsGroup.getRepresentative();
 
         if (representativeArgs.isConfig()) {
-            try {
-                config = loadConfig(new FileReader(representativeArgs.getConfig()));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+                Config.init(representativeArgs.getConfig());
+                config = Config.getCurrentConfiguration();
         }
 		
 		/* run selected mode */
@@ -235,14 +220,10 @@ public class OSM2World {
     Configuration compositeConfiguration;
 
     OSM2World(File inputfile, Configuration userconfig) throws IOException {
-        String defaultconfigfile = "config/configuration-default.properties";
-        Configuration defaultconfig;
-        InputStream inputstream = Thread.currentThread().getContextClassLoader().getResourceAsStream(defaultconfigfile);
-        defaultconfig = loadConfig(new InputStreamReader(inputstream));
-        // better to use CombinedConfiguration?
+          // better to use CombinedConfiguration?
         OSMDataReader dataReader = new OSMFileReader(inputfile);
         osmdata = dataReader.getData();
-        cf = new ConversionFacade(osmdata, defaultconfig);
+        cf = new ConversionFacade(osmdata);
 
     }
 

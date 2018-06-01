@@ -28,6 +28,7 @@ import org.osm2world.core.math.VectorXYZ;
 import org.osm2world.core.math.VectorXZ;
 import org.osm2world.core.math.algorithms.JTSTriangulationUtil;
 import org.osm2world.core.math.algorithms.Poly2TriTriangulationUtil;
+import org.osm2world.core.target.OsmOrigin;
 import org.osm2world.core.target.RenderableToAllTargets;
 import org.osm2world.core.target.Target;
 import org.osm2world.core.target.common.material.ImmutableMaterial;
@@ -42,6 +43,7 @@ import org.osm2world.core.world.modules.SurfaceAreaModule.SurfaceArea;
 import org.osm2world.core.world.modules.common.AbstractModule;
 
 import com.google.common.base.Function;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 /**
  * adds golf courses to the map
@@ -187,7 +189,7 @@ public class GolfModule extends AbstractModule {
 			Collection<TriangleXYZ> triangles = getEleConnectors().getTriangulationXYZ(trianglesXZ);
 			
 			target.drawTriangles(material, triangles,
-					triangleTexCoordLists(triangles , material, GLOBAL_X_Z));
+					triangleTexCoordLists(triangles , material, GLOBAL_X_Z), new OsmOrigin("Golf.Green",area,getOutlinePolygonXZ()));
 			
 			/* render pin */
 					
@@ -245,17 +247,17 @@ public class GolfModule extends AbstractModule {
 			for (VectorXYZ v : upperHoleRing) {
 				lowerHoleRing.add(v.y(holeBottomEle));
 			}
-									
-			List<VectorXYZ> vs = createTriangleStripBetween(
+
+			VectorXYZList vs = createTriangleStripBetween(
 					upperHoleRing, lowerHoleRing);
 			
 			Material groundMaterial = Materials.EARTH.makeSmooth();
 			
 			target.drawTriangleStrip(groundMaterial, vs,
-					texCoordLists(vs, groundMaterial, STRIP_WALL));
+					texCoordLists(vs.vs, groundMaterial, STRIP_WALL), null);
 			
 			target.drawConvexPolygon(groundMaterial, lowerHoleRing,
-					texCoordLists(vs, groundMaterial, GLOBAL_X_Z));
+					texCoordLists(vs.vs, groundMaterial, GLOBAL_X_Z));
 			
 			/* draw flag */
 			
@@ -270,8 +272,8 @@ public class GolfModule extends AbstractModule {
 					new VectorXYZ(pos.x + 0.4, 1.5, pos.z),
 					new VectorXYZ(pos.x + 0.4, 1.2, pos.z));
 			
-			target.drawTriangleStrip(flagcloth, flagVertices,
-					texCoordLists(flagVertices, flagcloth, STRIP_WALL));
+			target.drawTriangleStrip(flagcloth, new VectorXYZList(flagVertices),
+					texCoordLists(flagVertices, flagcloth, STRIP_WALL), null);
 			
 		}
 		

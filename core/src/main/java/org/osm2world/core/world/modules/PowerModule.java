@@ -38,6 +38,7 @@ import org.osm2world.core.world.data.NoOutlineWaySegmentWorldObject;
 import org.osm2world.core.world.data.WorldObject;
 import org.osm2world.core.world.data.WorldObjectWithOutline;
 import org.osm2world.core.world.modules.common.AbstractModule;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 /**
  * module for power infrastructure
@@ -256,16 +257,16 @@ public final class PowerModule extends AbstractModule {
 			/* draw blades */
 			
 			// define first blade
-			List<VectorXYZ> bladeFront = asList(
+			VectorXYZList bladeFront = new VectorXYZList(asList(
 				getBase().addY(poleHeight).add(-poleRadiusTop*2, nacelleHeight/2, +nacelleHeight/2),
 				getBase().addY(poleHeight).add(-poleRadiusTop*2, nacelleHeight/2 - bladeLength, 0f),
 				getBase().addY(poleHeight).add(-poleRadiusTop*2, nacelleHeight/2, -nacelleHeight/2)
-			);
-			List<VectorXYZ> bladeBack = asList(
-				bladeFront.get(0),
-				bladeFront.get(2),
-				bladeFront.get(1)
-			);
+			));
+			VectorXYZList bladeBack = new VectorXYZList(asList(
+				bladeFront.vs.get(0),
+				bladeFront.vs.get(2),
+				bladeFront.vs.get(1)
+			));
 			
 			// rotate and draw blades
 			double rotCenterY = getBase().y + poleHeight + nacelleHeight/2;
@@ -273,16 +274,16 @@ public final class PowerModule extends AbstractModule {
 			
 			bladeFront = rotateShapeX(bladeFront, 60, rotCenterY, rotCenterZ);
 			bladeBack  = rotateShapeX(bladeBack, 60, rotCenterY, rotCenterZ);
-			target.drawTriangleStrip(bladeMaterial, bladeFront, null);
-			target.drawTriangleStrip(bladeMaterial, bladeBack, null);
+			target.drawTriangleStrip(bladeMaterial, bladeFront, null, null);
+			target.drawTriangleStrip(bladeMaterial, bladeBack, null, null);
 			bladeFront = rotateShapeX(bladeFront, 120, rotCenterY, rotCenterZ);
 			bladeBack  = rotateShapeX(bladeBack, 120, rotCenterY, rotCenterZ);
-			target.drawTriangleStrip(bladeMaterial, bladeFront, null);
-			target.drawTriangleStrip(bladeMaterial, bladeBack, null);
+			target.drawTriangleStrip(bladeMaterial, bladeFront, null, null);
+			target.drawTriangleStrip(bladeMaterial, bladeBack, null, null);
 			bladeFront = rotateShapeX(bladeFront, 120, rotCenterY, rotCenterZ);
 			bladeBack  = rotateShapeX(bladeBack, 120, rotCenterY, rotCenterZ);
-			target.drawTriangleStrip(bladeMaterial, bladeFront, null);
-			target.drawTriangleStrip(bladeMaterial, bladeBack, null);
+			target.drawTriangleStrip(bladeMaterial, bladeFront, null, null);
+			target.drawTriangleStrip(bladeMaterial, bladeBack, null, null);
 			
 		}
 		
@@ -619,7 +620,7 @@ public final class PowerModule extends AbstractModule {
 					tex.add(new VectorXZ(i, 0));
 				}
 				
-				target.drawTriangleStrip(Materials.POWER_TOWER_VERTICAL, vs, texList);
+				target.drawTriangleStrip(Materials.POWER_TOWER_VERTICAL, new VectorXYZList(vs), texList, null);
 			}
 		}
 	
@@ -642,7 +643,7 @@ public final class PowerModule extends AbstractModule {
 			tex.add(new VectorXZ(1, 0));
 			tex.add(new VectorXZ(0, 0));
 		
-			target.drawTriangleStrip(Materials.POWER_TOWER_HORIZONTAL, vs, texList);
+			target.drawTriangleStrip(Materials.POWER_TOWER_HORIZONTAL, new VectorXYZList(vs), texList, null);
 		}
 
 		private void drawHorizontalTop(Target<?> target, VectorXZ[][] points,
@@ -664,7 +665,7 @@ public final class PowerModule extends AbstractModule {
 					tex.add(new VectorXZ(0, i));
 					tex.add(new VectorXZ(1, i));
 				}
-				target.drawTriangleStrip(Materials.POWER_TOWER_VERTICAL, vs, texList);
+				target.drawTriangleStrip(Materials.POWER_TOWER_VERTICAL, new VectorXYZList(vs), texList, null);
 			}
 		}
 		
@@ -892,21 +893,21 @@ public final class PowerModule extends AbstractModule {
 			
 			/* draw front */
 			
-			List<VectorXYZ> vs = asList(
+			VectorXYZList vs = new VectorXYZList(asList(
 					bottomLeft.add(upVector),
 					bottomLeft,
 					bottomRight.add(upVector),
-					bottomRight);
+					bottomRight));
 			
 			target.drawTriangleStrip(Materials.SOLAR_PANEL, vs,
-					texCoordLists(vs, Materials.SOLAR_PANEL, STRIP_WALL));
+					texCoordLists(vs.vs, Materials.SOLAR_PANEL, STRIP_WALL), null);
 			
 			/* draw back */
 			
-			vs = asList(vs.get(2), vs.get(3), vs.get(0), vs.get(1));
+			vs = new VectorXYZList(asList(vs.vs.get(2), vs.vs.get(3), vs.vs.get(0), vs.vs.get(1)));
 			
 			target.drawTriangleStrip(Materials.PLASTIC_GREY, vs,
-					texCoordLists(vs, Materials.PLASTIC_GREY, STRIP_WALL));
+					texCoordLists(vs.vs, Materials.PLASTIC_GREY, STRIP_WALL), null);
 						
 		}
 		

@@ -34,6 +34,7 @@ import org.osm2world.core.target.common.material.Materials;
 import org.osm2world.core.target.common.material.TexCoordFunction;
 import org.osm2world.core.world.data.NoOutlineNodeWorldObject;
 import org.osm2world.core.world.modules.common.AbstractModule;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 
 /**
  * adds various types of street furniture to the world
@@ -330,10 +331,10 @@ public class StreetFurnitureModule extends AbstractModule {
 					int materialIndex = (int) floor(stripeMaterials.size() * (double)row / mesh[0].length);
 					Material material = stripeMaterials.get(materialIndex);
 					
-					target.drawTriangleStrip(material, vsFront, texCoordLists(
-							vsFront, material, texCoordFunction));
-					target.drawTriangleStrip(material, vsBack, texCoordLists(
-							vsBack, material, texCoordFunction));
+					target.drawTriangleStrip(material, new VectorXYZList(vsFront), texCoordLists(
+							vsFront, material, texCoordFunction), null);
+					target.drawTriangleStrip(material, new VectorXYZList(vsBack), texCoordLists(
+							vsBack, material, texCoordFunction), null);
 					
 				}
 				
@@ -513,8 +514,8 @@ public class StreetFurnitureModule extends AbstractModule {
 
 			List<VectorXYZ> vsListPoster = asList(vsPoster);
 
-			target.drawTriangleStrip(ADVERTISING_POSTER, vsListPoster,
-					texCoordLists(vsListPoster, ADVERTISING_POSTER, STRIP_FIT));
+			target.drawTriangleStrip(ADVERTISING_POSTER, new VectorXYZList(vsListPoster),
+					texCoordLists(vsListPoster, ADVERTISING_POSTER, STRIP_FIT), null);
 
 			VectorXYZ[] vsBoard = {
 					vsPoster[2],
@@ -525,8 +526,8 @@ public class StreetFurnitureModule extends AbstractModule {
 
 			List<VectorXYZ> vsListBoard = asList(vsBoard);
 
-			target.drawTriangleStrip(CONCRETE, vsListBoard,
-					texCoordLists(vsListBoard, CONCRETE, STRIP_WALL));
+			target.drawTriangleStrip(CONCRETE, new VectorXYZList(vsListBoard),
+					texCoordLists(vsListBoard, CONCRETE, STRIP_WALL), null);
 			
 			
 			/* draw poles */

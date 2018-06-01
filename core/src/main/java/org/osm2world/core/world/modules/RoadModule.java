@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osm2world.core.target.OsmOrigin;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.openstreetmap.data.MapBasedTagGroup;
 import org.osm2world.openstreetmap.data.Tag;
 import org.osm2world.openstreetmap.data.TagGroup;
@@ -552,7 +554,7 @@ public class RoadModule extends ConfigurableWorldModule {
 			Collection<TriangleXYZ> triangles = super.getTriangulation();
 			
 			target.drawTriangles(material, triangles,
-					triangleTexCoordLists(triangles, material, GLOBAL_X_Z));
+					triangleTexCoordLists(triangles, material, GLOBAL_X_Z), new OsmOrigin("RoadJunction",node,getOutlinePolygonXZ()));
 			
 			/* connect some lanes such as sidewalks between adjacent roads */
 			
@@ -639,7 +641,7 @@ public class RoadModule extends ConfigurableWorldModule {
 			Collection<TriangleXYZ> trianglesXYZ = getTriangulation();
 			
 			target.drawTriangles(material, trianglesXYZ,
-					triangleTexCoordLists(trianglesXYZ, material, GLOBAL_X_Z));
+					triangleTexCoordLists(trianglesXYZ, material, GLOBAL_X_Z), new OsmOrigin("RoadConnector",node,getOutlinePolygonXZ()));
 			
 		}
 		
@@ -712,11 +714,11 @@ public class RoadModule extends ConfigurableWorldModule {
 			}
 			
 			/* draw crossing */
-			
-			List<VectorXYZ> vs = asList(endLeft, startLeft, endRight, startRight);
+
+			VectorXYZList vs = new VectorXYZList(asList(endLeft, startLeft, endRight, startRight));
 			
 			target.drawTriangleStrip(surface, vs,
-					texCoordLists(vs, surface, GLOBAL_X_Z));
+					texCoordLists(vs.vs, surface, GLOBAL_X_Z),null);
 			
 			/* draw lane connections */
 			
@@ -1303,12 +1305,12 @@ public class RoadModule extends ConfigurableWorldModule {
 					segment.getStartNode().getPos(), segment.getEndNode().getPos());
 			
 			/* render ground first (so gaps between the steps look better) */
-			
-			List<VectorXYZ> vs = createTriangleStripBetween(
+
+			VectorXYZList vs = createTriangleStripBetween(
 					leftOutline, rightOutline);
 
 			target.drawTriangleStrip(ASPHALT, vs,
-					texCoordLists(vs, ASPHALT, GLOBAL_X_Z));
+					texCoordLists(vs.vs, ASPHALT, GLOBAL_X_Z), new OsmOrigin("Road.Road",segment));
 			
 			/* determine the length of each individual step */
 			
@@ -1429,24 +1431,24 @@ public class RoadModule extends ConfigurableWorldModule {
 			Lane lastLane = lanesLeftToRight.get(lanesLeftToRight.size() - 1);
 			
 			if (firstLane.getHeightAboveRoad() > 0) {
-				
-				List<VectorXYZ> vs = createTriangleStripBetween(
+
+				VectorXYZList vs = createTriangleStripBetween(
 						getOutline(false),
 						addYList(getOutline(false), firstLane.getHeightAboveRoad()));
 				
 				target.drawTriangleStrip(getSurface(), vs,
-						texCoordLists(vs, getSurface(), STRIP_WALL));
+						texCoordLists(vs.vs, getSurface(), STRIP_WALL),new OsmOrigin("Road.firstlane",segment));
 				
 			}
 			
 			if (lastLane.getHeightAboveRoad() > 0) {
-				
-				List<VectorXYZ> vs = createTriangleStripBetween(
+
+				VectorXYZList vs = createTriangleStripBetween(
 						addYList(getOutline(true), lastLane.getHeightAboveRoad()),
 						getOutline(true));
 				
 				target.drawTriangleStrip(getSurface(), vs,
-						texCoordLists(vs, getSurface(), STRIP_WALL));
+						texCoordLists(vs.vs, getSurface(), STRIP_WALL),new OsmOrigin("Road.lastlane",segment));
 				
 			}
 						
@@ -1482,7 +1484,7 @@ public class RoadModule extends ConfigurableWorldModule {
 			Collection<TriangleXYZ> triangles = getTriangulation();
 			
 			target.drawTriangles(material, triangles,
-					triangleTexCoordLists(triangles, material, GLOBAL_X_Z));
+					triangleTexCoordLists(triangles, material, GLOBAL_X_Z), new OsmOrigin("RoadArea",area,getOutlinePolygonXZ()));
 			
 		}
 		
@@ -1736,7 +1738,7 @@ public class RoadModule extends ConfigurableWorldModule {
 			rightLaneBorder = addYList(rightLaneBorder, getHeightAboveRoad());
 			
 			type.render(target, roadPart, road.rightHandTraffic,
-					road.tags, laneTags, leftLaneBorder, rightLaneBorder);
+					road.tags, laneTags, leftLaneBorder, rightLaneBorder, road.segment);
 			
 		}
 		
@@ -1792,7 +1794,7 @@ public class RoadModule extends ConfigurableWorldModule {
 		public void renderTo(Target<?> target) {
 			
 			type.render(target, roadPart, rightHandTraffic,
-					EMPTY_TAG_GROUP, EMPTY_TAG_GROUP, leftBorder, rightBorder);
+					EMPTY_TAG_GROUP, EMPTY_TAG_GROUP, leftBorder, rightBorder,null);
 			
 		}
 		
@@ -1804,7 +1806,7 @@ public class RoadModule extends ConfigurableWorldModule {
 	 */
 	private static abstract class LaneType {
 		
-		private final String typeName;
+		protected final String typeName;
 		public final boolean isConnectableAtCrossings;
 		public final boolean isConnectableAtJunctions;
 				
@@ -1822,7 +1824,8 @@ public class RoadModule extends ConfigurableWorldModule {
 				boolean rightHandTraffic,
 				TagGroup roadTags, TagGroup laneTags,
 				List<VectorXYZ> leftLaneBorder,
-				List<VectorXYZ> rightLaneBorder);
+				List<VectorXYZ> rightLaneBorder,
+				MapWaySegment segment);
 		
 		public abstract Double getAbsoluteWidth(
 				TagGroup roadTags, TagGroup laneTags);
@@ -1852,7 +1855,7 @@ public class RoadModule extends ConfigurableWorldModule {
 				boolean rightHandTraffic,
 				TagGroup roadTags, TagGroup laneTags,
 				List<VectorXYZ> leftLaneBorder,
-				List<VectorXYZ> rightLaneBorder) {
+				List<VectorXYZ> rightLaneBorder, MapWaySegment segment) {
 			
 			Material surface = getSurface(roadTags, laneTags);
 			Material surfaceMiddle = getSurfaceMiddle(roadTags, laneTags);
@@ -1860,8 +1863,8 @@ public class RoadModule extends ConfigurableWorldModule {
 			/* draw lane triangle strips */
 			
 			if (surfaceMiddle == null || surfaceMiddle.equals(surface)) {
-				
-				List<VectorXYZ> vs = createTriangleStripBetween(
+
+				VectorXYZList vs = createTriangleStripBetween(
 						leftLaneBorder, rightLaneBorder);
 				
 				boolean mirrorLeftRight = laneTags.containsKey("turn")
@@ -1873,8 +1876,8 @@ public class RoadModule extends ConfigurableWorldModule {
 				}
 				
 				target.drawTriangleStrip(surface, vs,
-						texCoordLists(vs, surface, new ArrowTexCoordFunction(
-								roadPart, rightHandTraffic, mirrorLeftRight)));
+						texCoordLists(vs.vs, surface, new ArrowTexCoordFunction(
+								roadPart, rightHandTraffic, mirrorLeftRight)),new OsmOrigin("FlatTexturedLane."+typeName+".surfacemiddle",segment));
 				
 			} else {
 				
@@ -1883,19 +1886,19 @@ public class RoadModule extends ConfigurableWorldModule {
 				List<VectorXYZ> rightMiddleBorder =
 					createLineBetween(leftLaneBorder, rightLaneBorder, 0.7f);
 				
-				List<VectorXYZ> vsLeft = createTriangleStripBetween(
+				VectorXYZList vsLeft = createTriangleStripBetween(
 						leftLaneBorder, leftMiddleBorder);
-				List<VectorXYZ> vsMiddle = createTriangleStripBetween(
+				VectorXYZList vsMiddle = createTriangleStripBetween(
 						leftMiddleBorder, rightMiddleBorder);
-				List<VectorXYZ> vsRight = createTriangleStripBetween(
+				VectorXYZList vsRight = createTriangleStripBetween(
 						rightMiddleBorder, rightLaneBorder);
 				
 				target.drawTriangleStrip(surface, vsLeft,
-						texCoordLists(vsLeft, surface, GLOBAL_X_Z));
+						texCoordLists(vsLeft.vs, surface, GLOBAL_X_Z), new OsmOrigin("FlatTexturedLane.Left",(MapWaySegment)null));
 				target.drawTriangleStrip(surfaceMiddle, vsMiddle,
-						texCoordLists(vsMiddle, surfaceMiddle, GLOBAL_X_Z));
+						texCoordLists(vsMiddle.vs, surfaceMiddle, GLOBAL_X_Z),null);
 				target.drawTriangleStrip(surface, vsRight,
-						texCoordLists(vsRight, surface, GLOBAL_X_Z));
+						texCoordLists(vsRight.vs, surface, GLOBAL_X_Z),null);
 				
 			}
 			
@@ -2018,7 +2021,7 @@ public class RoadModule extends ConfigurableWorldModule {
 		public void render(Target<?> target, RoadPart roadPart,
 				boolean rightHandTraffic, TagGroup roadTags, TagGroup laneTags,
 				List<VectorXYZ> leftLaneBorder,
-				List<VectorXYZ> rightLaneBorder) {
+				List<VectorXYZ> rightLaneBorder, MapWaySegment segment) {
 
 			List<VectorXYZ> borderFront0, borderFront1;
 			List<VectorXYZ> borderTop0, borderTop1;
@@ -2037,16 +2040,16 @@ public class RoadModule extends ConfigurableWorldModule {
 				borderTop1 = addYList(rightLaneBorder, height);
 			}
 
-			List<VectorXYZ> vsTop = createTriangleStripBetween(
+			VectorXYZList vsTop = createTriangleStripBetween(
 					borderTop0, borderTop1);
 			target.drawTriangleStrip(Materials.KERB, vsTop,
-					texCoordLists(vsTop, Materials.KERB, STRIP_FIT_HEIGHT));
+					texCoordLists(vsTop.vs, Materials.KERB, STRIP_FIT_HEIGHT),null);
 
 			if (height > 0) {
-				List<VectorXYZ> vsFront = createTriangleStripBetween(
+				VectorXYZList vsFront = createTriangleStripBetween(
 						borderFront0, borderFront1);
 				target.drawTriangleStrip(Materials.KERB, vsFront,
-						texCoordLists(vsFront, Materials.KERB, STRIP_FIT_HEIGHT));
+						texCoordLists(vsFront.vs, Materials.KERB, STRIP_FIT_HEIGHT),null);
 			}
 			
 		}

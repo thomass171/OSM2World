@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osm2world.core.target.OsmOrigin;
+import org.osm2world.core.world.modules.common.VectorXYZList;
 import org.osm2world.openstreetmap.data.Tag;
 import org.osm2world.core.map_data.data.MapArea;
 import org.osm2world.core.map_data.data.MapData;
@@ -184,7 +186,7 @@ public class WaterModule extends ConfigurableWorldModule {
 				/* render ground */
 				
 				@SuppressWarnings("unchecked") // generic vararg is intentional
-				List<List<VectorXYZ>> strips = asList(
+				List<VectorXYZList> strips = asList(
 					createTriangleStripBetween(
 							leftOutline, leftWaterBorder),
 					createTriangleStripBetween(
@@ -197,18 +199,18 @@ public class WaterModule extends ConfigurableWorldModule {
 							rightWaterBorder, rightOutline)
 				);
 				
-				for (List<VectorXYZ> strip : strips) {
+				for (VectorXYZList strip : strips) {
 					target.drawTriangleStrip(TERRAIN_DEFAULT, strip,
-						texCoordLists(strip, TERRAIN_DEFAULT, GLOBAL_X_Z));
+						texCoordLists(strip.vs, TERRAIN_DEFAULT, GLOBAL_X_Z),null);
 				}
 				
 				/* render water */
 				
-				List<VectorXYZ> vs = createTriangleStripBetween(
+				VectorXYZList vs = createTriangleStripBetween(
 						leftWaterBorder, rightWaterBorder);
 				
 				target.drawTriangleStrip(WATER, vs,
-						texCoordLists(vs, WATER, GLOBAL_X_Z));
+						texCoordLists(vs.vs, WATER, GLOBAL_X_Z),null);
 				
 			}
 			
@@ -294,7 +296,7 @@ public class WaterModule extends ConfigurableWorldModule {
 		public void renderTo(Target<?> target) {
 			Collection<TriangleXYZ> triangles = getTriangulation();
 			target.drawTriangles(WATER, triangles,
-					triangleTexCoordLists(triangles, WATER, GLOBAL_X_Z));
+					triangleTexCoordLists(triangles, WATER, GLOBAL_X_Z), new OsmOrigin("Water",area,getOutlinePolygonXZ()));
 		}
 		
 	}
@@ -318,7 +320,7 @@ public class WaterModule extends ConfigurableWorldModule {
 				
 			Collection<TriangleXYZ> triangles = getTriangulation();
 			target.drawTriangles(PURIFIED_WATER, triangles,
-					triangleTexCoordLists(triangles, PURIFIED_WATER, GLOBAL_X_Z));
+					triangleTexCoordLists(triangles, PURIFIED_WATER, GLOBAL_X_Z), new OsmOrigin("AreaFountain",area,getOutlinePolygonXZ()));
 			
 			/* render walls */
 			
