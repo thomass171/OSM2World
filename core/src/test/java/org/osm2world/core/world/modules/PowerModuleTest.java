@@ -16,6 +16,7 @@ import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.BaseHierarchicalConfiguration;
 import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.junit.Test;
+import org.osm2world.core.Config;
 import org.osm2world.openstreetmap.data.MapBasedTagGroup;
 import org.osm2world.openstreetmap.data.Tag;
 import org.osm2world.core.ConversionFacade;
@@ -32,7 +33,7 @@ public class PowerModuleTest {
 	
 	@Test
 	public void testRepeatedRendering() throws Exception {
-		
+		Config.reset();
 		/* create fake data */
 		
 		List<OSMNode> nodes = asList(
@@ -54,10 +55,8 @@ public class PowerModuleTest {
 		StatisticsTarget t2 = new StatisticsTarget();
 		
 		List<Target<?>> targets = Arrays.<Target<?>>asList(t1, t2);
-		//List<WorldModule> modules = Collections.<WorldModule>singletonList(new PowerModule());
-        BaseHierarchicalConfiguration moduleconfig = new BaseHierarchicalConfiguration();
-		moduleconfig.setProperty("modules.module(0).name","PowerModule");
-        ConversionFacade.Results results = cf.createRepresentations(moduleconfig);
+		Config.getInstance().enableModules(new String[]{"PowerModule"});
+        ConversionFacade.Results results = cf.createRepresentations();
 		cf.render(results,targets);
 		PowerModule powerModule = (PowerModule) cf.getModule("PowerModule");
 		assertNotNull(powerModule);

@@ -9,10 +9,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.configuration2.BaseHierarchicalConfiguration;
 import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.apache.commons.configuration2.tree.ImmutableNode;
 import org.apache.commons.lang.time.StopWatch;
+import org.apache.log4j.Logger;
 import org.openstreetmap.osmosis.core.domain.v0_6.Bound;
 import org.osm2world.core.map_data.creation.MapProjection;
 import org.osm2world.core.map_data.creation.MetricMapProjection;
@@ -36,6 +39,7 @@ import org.osm2world.core.osm.creation.OSMFileReader;
 import org.osm2world.core.osm.data.OSMData;
 import org.osm2world.core.target.Renderable;
 import org.osm2world.core.target.Target;
+import org.osm2world.core.target.TargetBounds;
 import org.osm2world.core.target.TargetUtil;
 import org.osm2world.core.target.common.material.Materials;
 import org.osm2world.core.util.FaultTolerantIterationUtil;
@@ -71,10 +75,11 @@ import org.osm2world.core.world.modules.WaterModule;
  * Instanciated by build() method.
  */
 public class ConversionFacade {
+    Logger logger = Logger.getLogger(ConversionFacade.class.getName());
     OSMData osmData = null;
-    MapData mapData=null;
+    MapData mapData = null;
     List<WorldModule> worldModules = null;
-    OriginMapProjection mapProjection=null;
+    OriginMapProjection mapProjection = null;
     
     /**
      *
@@ -144,36 +149,7 @@ public class ConversionFacade {
         }
 
     }
-
-    /**
-     * generates a default list of modules for the conversion
-     */
-    private static final List<WorldModule> createDefaultModuleList() {
-
-        return Arrays.asList((WorldModule)
-                        new RoadModule(),
-                new RailwayModule(),
-                new BuildingModule(),
-                new ParkingModule(),
-                new TreeModule(),
-                new StreetFurnitureModule(),
-                new TrafficSignModule(),
-                new BicycleParkingModule(),
-                new WaterModule(),
-                new PoolModule(),
-                new GolfModule(),
-                new SportsModule(),
-                new CliffModule(),
-                new BarrierModule(),
-                new PowerModule(),
-                new BridgeModule(),
-                new TunnelModule(),
-                new SurfaceAreaModule(),
-                new InvisibleModule()
-        );
-
-    }
-
+    
     private Factory<? extends OriginMapProjection> mapProjectionFactory =
             new DefaultFactory<MetricMapProjection>(MetricMapProjection.class);
 
@@ -186,7 +162,7 @@ public class ConversionFacade {
     /**
      * sets the factory that will make {@link MapProjection}
      * instances during subsequent calls to
-     * {@link #createRepresentations(HierarchicalConfiguration)}.
+     * {@link #createRepresentations()}.
      *
      * @see DefaultFactory
      */
@@ -198,7 +174,7 @@ public class ConversionFacade {
     /**
      * sets the factory that will make {@link EleConstraintEnforcer}
      * instances during subsequent calls to
-     * {@link #createRepresentations(HierarchicalConfiguration)}.
+     * {@link #createRepresentations()}.
      *
      * @see DefaultFactory
      */
@@ -210,7 +186,7 @@ public class ConversionFacade {
     /**
      * sets the factory that will make {@link TerrainInterpolator}
      * instances during subsequent calls to
-     * {@link #createRepresentations(HierarchicalConfiguration)}.
+     * {@link #createRepresentations()}.
      *
      * @see DefaultFactory
      */
@@ -222,7 +198,7 @@ public class ConversionFacade {
     /**
      * Extracted from createRepresentations.
      */
-    public void render(ConversionFacade.Results results, List<Target<?>> targets){
+    public void render(ConversionFacade.Results results, List<Target<?>> targets) {
         boolean underground = Config.getCurrentConfiguration().getBoolean("renderUnderground", true);
 
         if (targets != null) {
@@ -239,13 +215,13 @@ public class ConversionFacade {
      * To obtain the data, you can use an {@link OSMDataReader}.
      * Can be run multiple times with different configurations. modulelist is derived from configuration.
      * Rendering to targets extracted.
-     * 
+     *
      * @throws BoundingBoxSizeException for oversized bounding boxes
      */
-    public Results createRepresentations(HierarchicalConfiguration moduleconfig)
+    public Results createRepresentations()
             throws IOException, BoundingBoxSizeException {
 
-        Configuration compositeConfiguration = Config.getCurrentConfiguration();       
+        Configuration compositeConfiguration = Config.getCurrentConfiguration();
         init(compositeConfiguration);
 
         Double maxBoundingBoxDegrees = compositeConfiguration.getDouble("maxBoundingBoxDegrees", null);
@@ -266,27 +242,32 @@ public class ConversionFacade {
 
         OSMToMapDataConverter converter = new OSMToMapDataConverter(mapProjection, compositeConfiguration);
         mapData = converter.createMapData(osmData);
-		
+
+        TargetBounds targetBounds = Config.getInstance().getTargetBounds();
+        if (targetBounds != null) {
+            targetBounds.init(mapData);
+        }
+            
 		/* apply world modules */
         updatePhase(Phase.REPRESENTATION);
-        
-        if (moduleconfig == null) {
-            worldModules = createDefaultModuleList();
-        }else{
-            worldModules = new ArrayList<>();
-            List<HierarchicalConfiguration> modulelist = moduleconfig.configurationsAt("modules");
-            for (HierarchicalConfiguration modconfig:modulelist ) {
-            String modulename = (String) modconfig.getString("module.name");
+
+        worldModules = new ArrayList<>();
+        String[] modulelist = Config.getInstance().getModules();
+        for (String modulename : modulelist) {
+            //String modulename = (String) modconfig.getString("name");
+            if (Config.getCurrentConfiguration().getBoolean("modules." + modulename + ".enabled")) {
+                logger.debug("Building module " + modulename);
                 try {
-                    Class clazz = Class.forName("org.osm2world.core.world.modules."+modulename);
+                    String classname = Config.getCurrentConfiguration().getString("modules." + modulename + ".class");
+                    Class clazz = Class.forName(classname);
                     WorldModule instance = (WorldModule) clazz.newInstance();
                     worldModules.add(instance);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            modulelist.size();
         }
+
 
         Materials.configureMaterials(compositeConfiguration);
         //this will cause problems if multiple conversions are run
@@ -295,7 +276,7 @@ public class ConversionFacade {
         WorldCreator moduleManager =
                 new WorldCreator(compositeConfiguration, worldModules);
         moduleManager.addRepresentationsTo(mapData);
-		
+        
 		/* determine elevations */
         updatePhase(Phase.ELEVATION);
 
@@ -307,19 +288,18 @@ public class ConversionFacade {
         }
 
         calculateElevations(mapData, eleData, compositeConfiguration);
-		
+        
 		/* create terrain */
         updatePhase(Phase.TERRAIN); //TODO this phase may be obsolete
 				
 		/* supply results to targets and caller */
         updatePhase(Phase.FINISHED);
 
-        
 
         return new Results(mapProjection, mapData, eleData);
 
     }
-    
+
     /**
      * uses OSM data and an terrain elevation data (usually from an external
      * source) to calculate elevations for all {@link EleConnector}s of the
@@ -429,8 +409,8 @@ public class ConversionFacade {
     }
 
     public WorldModule getModule(String name) {
-        for (WorldModule m : worldModules){
-            String n=m.getClass().getSimpleName();
+        for (WorldModule m : worldModules) {
+            String n = m.getClass().getSimpleName();
             if (n.equals(name)) {
                 return m;
             }
@@ -441,8 +421,8 @@ public class ConversionFacade {
     public MapData getMapData() {
         return mapData;
     }
-    
-    public MapProjection getProjection(){
+
+    public MapProjection getProjection() {
         return mapProjection;
     }
 

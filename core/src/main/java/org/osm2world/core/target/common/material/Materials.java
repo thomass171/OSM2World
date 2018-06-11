@@ -42,7 +42,7 @@ public final class Materials {
 			new ConfMaterial(Interpolation.FLAT, Color.BLUE);
 
 	public static final ConfMaterial ASPHALT =
-		new ConfMaterial(Interpolation.FLAT, new Color(0.3f, 0.3f, 0.3f));
+		new ConfMaterial("ASPHALT",Interpolation.FLAT, new Color(0.3f, 0.3f, 0.3f));
 	public static final ConfMaterial BRICK =
 		new ConfMaterial(Interpolation.FLAT, new Color(1.0f, 0.5f, 0.25f));
 	public static final ConfMaterial COBBLESTONE =
@@ -87,7 +87,7 @@ public final class Materials {
 	public static final ConfMaterial ROAD_MARKING =
 		new ConfMaterial(Interpolation.FLAT, new Color(0.9f, 0.9f, 0.9f));
 	public static final ConfMaterial ROAD_MARKING_DASHED =
-			new ConfMaterial(Interpolation.FLAT, new Color(0.9f, 0.9f, 0.9f));
+			new ConfMaterial("ROAD_MARKING_DASHED", Interpolation.FLAT, new Color(0.9f, 0.9f, 0.9f));
 	public static final ConfMaterial ROAD_MARKING_ZEBRA =
 			new ConfMaterial(Interpolation.FLAT, new Color(0.9f, 0.9f, 0.9f));
 	public static final ConfMaterial ROAD_MARKING_CROSSING =

@@ -71,7 +71,7 @@ public abstract class AbstractTarget<R extends Renderable>
 	}
 	
 	/**
-	 * draws an extruded shape using {@link #drawTriangleStrip(Material, List, List, OsmOrigin)} calls.
+	 * draws an extruded shape using {@link #drawTriangleStrip(Material, VectorXYZList, List, OsmOrigin)} calls.
 	 * See {@link Target#drawExtrudedShape(Material, ShapeXZ, List, List, List, List, EnumSet)}
 	 * for documentation of the implemented interface method.
 	 */

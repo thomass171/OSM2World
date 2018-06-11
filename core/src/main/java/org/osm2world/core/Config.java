@@ -5,6 +5,7 @@ import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.log4j.Logger;
+import org.osm2world.core.target.TargetBounds;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +13,11 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Singleton for holding the current configuration and make it available globally.
@@ -24,6 +30,7 @@ public class Config {
     private Configuration defaultconfig = null;
     private static Config instance = null;
     String defaultconfigfile = "config/configuration-default.properties";
+    private TargetBounds targetBounds = null;
 
     private Config(File configfile) {
         Reader reader = null;
@@ -65,7 +72,12 @@ public class Config {
      * @param userconfig
      */
     public static void reinit(Configuration userconfig) {
+        instance = null;
         getInstance().merge(userconfig);
+    }
+
+    public static void reset() {
+        instance = new Config(null);
     }
 
     /**
@@ -93,4 +105,52 @@ public class Config {
         }
         return config;
     }
+
+    public void setTargetBounds(TargetBounds targetBounds){
+        this.targetBounds = targetBounds;
+    }
+    
+    public TargetBounds getTargetBounds() {
+        return targetBounds;
+    }
+    
+    public String[] getModules(){
+        Map<String,String> modules = new HashMap<>(); 
+        loopModules((String property, String modulename)->{
+            modules.put(modulename,"");
+        });
+        return modules.keySet().toArray(new String[0]);
+    }
+
+    /**
+     * Disables all modules not in list.
+     */
+    public void enableModules(String[] modulenames) {
+        loopModules((String property, String modulename)->{
+            Boolean b;
+            if (Arrays.asList(modulenames).contains(modulename)){
+                b = Boolean.TRUE;
+            }else{
+                b = Boolean.FALSE;
+            }
+            compositeConfiguration.setProperty(property+".enabled",b);
+        });
+    }
+    
+    private void loopModules(ModuleHandler moduleHandler){
+        Iterator<String> keys = compositeConfiguration.getKeys("modules");
+        while (keys.hasNext()){
+            String key = keys.next();
+            String[] parts = key.split("\\.");
+            moduleHandler.handleModule("modules."+parts[1],parts[1]);
+        }
+
+    }
 }
+
+@FunctionalInterface
+interface ModuleHandler{
+    void handleModule(String property, String modulename);
+}
+
+

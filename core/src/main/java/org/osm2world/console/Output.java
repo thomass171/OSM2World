@@ -99,7 +99,7 @@ public final class Output {
 			new PerformanceListener(argumentsGroup.getRepresentative());
 		cf.addProgressListener(perfListener);
 		
-		Results results = cf.createRepresentations(null);
+		Results results = cf.createRepresentations();
 		
 		//ImageExporter exporter = null;
 		

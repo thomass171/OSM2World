@@ -33,6 +33,11 @@ public class ConfMaterial extends Material {
 	public ConfMaterial(Interpolation interpolation, Color color) {
 		super(interpolation, color);
 	}
+
+	public ConfMaterial(String name, Interpolation interpolation, Color color) {
+		super(interpolation, color);
+		setName(name);
+	}
 	
 	public void setInterpolation(Interpolation interpolation) {
 		this.interpolation = interpolation;
